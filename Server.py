@@ -3,11 +3,12 @@ T_PORT = 12345
 TCP_IP = '127.0.0.1'
 BUF_SIZE = 30
 
-k = socket.socket (socket.AF_INET, socket.SOCK_STREAM)
-k.bind((TCP_IP, T_PORT))
-k.listen(1)
-con, addr = k.accept()
-print ('Connection Address is: ' , addr)
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.bind((TCP_IP, T_PORT))
+
+sock.listen()
+client1, addr1 = sock.accept()
 
 while True :
-    data = con.recv(BUF_SIZE)
+    data = client1.recv(BUF_SIZE)
+    client1.send("lol".encode())
