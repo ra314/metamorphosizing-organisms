@@ -11,6 +11,10 @@ class Organism:
 		
 	def __str__(self):
 		return self.name
+		
+	def display(self):
+		mana_str = ('+' * self.num_mana) + ('-' * (self.ability.num_mana_to_activate - self.num_mana))
+		return self.name + '\n' + mana_str
 
 from ManaType import mana_indexes
 from Ability import abilities

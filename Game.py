@@ -14,6 +14,11 @@ class Game:
 		self.grid = None
 		self.matches = None
 		self.matches_per_type = np.zeros(len(mana_indexes))
+		
+	def display(self)
+		return player1.display() + '\n'\
+			player2.display() + '\n'\
+			str(grid)
 	
 	def randomise_arena(self):
 		arena = random.choice(['stadium', 'forest valley', 'abandoned town'])

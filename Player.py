@@ -12,6 +12,9 @@ class Player:
 		self.moves = self.moves_per_turn
 		
 	def __str__(self):
-		return f"{self.name} {str(self.organism1)} {str(self.organism2)}"
+		return self.name
 		
-	
+	def display(self):
+		return self.name + '\n'\
+			+ organism1.display() + '\n'\
+			+ organism2.display()
