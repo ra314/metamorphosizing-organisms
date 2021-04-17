@@ -23,14 +23,14 @@ stage_2_organisms = {}
 stage_2_organisms['Bonzire'] = Organism('Bonzumi', abilities['Flare_plus'], 
 	mana_types['fire'], None)
 stage_1_organisms['Bonzumi'] = Organism('Bonzumi', abilities['Flare'], 
-	mana_types['fire'], Bonzire)
+	mana_types['fire'], stage_2_organisms['Bonzire'])
 
 stage_2_organisms['Sephanix'] = Organism('Sephanix', abilities['Hydro_Rush_plus'], 		
 	mana_types['water'], None)
 stage_1_organisms['Pelijet'] = Organism('Pelijet', abilities['Hydro_Rush'], 
-	mana_types['water'], Sephanix)
+	mana_types['water'], stage_2_organisms['Sephanix'])
 
 stage_2_organisms['Karaggon'] = Organism('Karaggon', abilities['Heal_Leaf_plus'], 
 	mana_types['grass'], None)
 stage_1_organisms['Turtleisk'] = Organism('Turtleisk', abilities['Heal_Leaf'], 
-	mana_types['grass'], Karaggon)
+	mana_types['grass'], stage_2_organisms['Karaggon'])

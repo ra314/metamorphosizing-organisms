@@ -1,4 +1,4 @@
-from prepare_socket import *
+from PrepareSocket import *
 import os
 
 #Connecting to server

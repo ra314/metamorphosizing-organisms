@@ -5,13 +5,13 @@ def create_player(client):
 	client.send("Send name: ".encode())
 	name = (client.recv(BUF_SIZE)).decode('utf-8')
 	organism_choices = '\n\n'.join([f"{index} {str(organism)} \n{str(organism.getAbility())}" 
-		for index, organism in enumerate(stage_1_organisms)])
-	client.send(f"Pick 2 organisms. eg '1 3'.\n{organism_choices}\n\n".encode())
+		for index, organism in enumerate(stage_1_organisms.values())])
+	client.send(f"Pick 2 organisms. eg 'Bonzumi Sepahnix'.\n{organism_choices}\n\n".encode())
 	selection = (client.recv(BUF_SIZE)).decode('utf-8')
-	organisms = [stage_1_organisms[int(index)] for index in selection.split()]
+	organisms = [stage_1_organisms[name] for name in selection.split()]
 	return Player(organisms[0], organisms[1], 80, name)
 
-from prepare_socket import *
+from PrepareSocket import *
 
 #Connecting to clients
 sock.bind((TCP_IP, T_PORT))
