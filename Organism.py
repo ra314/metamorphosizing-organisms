@@ -7,4 +7,7 @@ class Organism:
 		self.evolution = evolution
 		
 	def __str__(self):
-		return self.name + '\n' + str(self.ability)
+		return self.name
+		
+	def getAbility(self):
+		return self.ability
