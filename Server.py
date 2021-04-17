@@ -4,14 +4,20 @@ from Game import Game
 from copy import deepcopy
 from time import sleep
 
+def enumerate_choices(choices):
+	output = ""
+	for choice, index in enumerate(choices):
+		output += f"[{index}]: {choice}\n"
+	return output
+
 def create_player(client):
 	client.send("Send name: ".encode())
 	name = (client.recv(BUF_SIZE)).decode('utf-8')
-	organism_choices = '\n\n'.join([f"{index} {str(organism)} \n{str(organism.ability)}" 
-		for index, organism in enumerate(stage_1_organisms.values())])
-	client.send(f"Pick 2 organisms. eg 'Bonzumi Sepahnix'.\n{organism_choices}\n\n".encode())
-	selection = (client.recv(BUF_SIZE)).decode('utf-8')
-	organisms = [deepcopy(stage_1_organisms[name]) for name in selection.split()]
+	
+	organism_choices = enumerate_choices(list(stage_1_organisms.values()))
+	client.send(f"{organism_choices}\n".encode())
+	indexes = (client.recv(BUF_SIZE)).decode('utf-8')
+	organisms = [deepcopy(list(stage_1_organisms.values())[int(index])) for index in indexes.split()]
 	return Player(organisms[0], organisms[1], name)
 	
 def broadcast(client1, client2, message, sleep_time):
