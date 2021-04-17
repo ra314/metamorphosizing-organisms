@@ -1,1 +1,7 @@
-mana_types = {'fire': 'fire', 'electric': 'electric', 'water': 'water', 'grass': 'grass'}
+mana_types = {
+	'fire': 'fire', 
+	'electric': 'electric', 
+	'water': 'water', 
+	'grass': 'grass', 
+	'psychic': 'psychic'
+	}

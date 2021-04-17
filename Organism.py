@@ -8,11 +8,6 @@ class Organism:
 		
 	def __str__(self):
 		return self.name
-		
-	def getAbility(self):
-		return self.ability
-		
-
 
 from ManaType import mana_types
 from Ability import abilities
