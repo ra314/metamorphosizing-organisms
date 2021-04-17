@@ -1,5 +1,5 @@
 class Ability:
-	def __init__(self, description, HP_delta, tile_match_shape, num_tiles_to_convert, increase_move_count, num_berries_delta, num_mana_delta):
+	def __init__(self, description, HP_delta, tile_match_shape, num_tiles_to_convert, increase_move_count, num_berries_delta, num_mana_delta, num_mana_to_activate):
 		#str
 		self.description = description
 		
@@ -20,3 +20,9 @@ class Ability:
 		#(amount to increase player's 1st organism's mana, amount to increase player's 2nd organism's mana,
 		#amount to decrease opponent's 1st organism's mana, amount to decrease opponent's 2nd organism's mana)
 		self.num_mana_delta = num_mana_delta
+		
+		#amount of mana needed to activate ability
+		self.num_mana_to_activate = num_mana_to_activate
+		
+	def get_description(self):
+		return self.description
