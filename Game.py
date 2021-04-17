@@ -21,23 +21,37 @@ class Game:
 			str(grid)
 	
 	def randomise_arena(self):
-		arena = random.choice(['stadium', 'forest valley', 'abandoned town'])
+		arenas = {'stadium': "Stadium: Each player has 60 starting HP"
+			'forest valley': "Forest Valley: 1 less Berry to evolve"
+			'abandoned town': "Abandoned Town: Evolving restores 10 HP"}
+		arena = random.choice(list(arenas.keys()))
 		if arena == 'stadium':
 			player.max_HP = 60
 			player1.curr_HP = 60
 			player2.curr_HP = 60
 			
 		elif arena == 'forest valley':
-			Organism.berries_to_evolve = 3
+			Organism.berries_to_evolve -= 1
 			
 		elif arena == 'abandoned town':
 			Organism.HP_restored_on_evolution = 10
+		return arenas[arena]
 			
 	def select_first_player(self):
-		first_player = random.choice([self.player1, self.player2])
+		first_player, second_player = random.shuffle([self.player1, self.player2])
 		first_player.my_turn = True
-		first_player.curr_HP += 5
-		
+		second_player.curr_HP += 5
+		return f"The first player is {first_player.name}. \n\
+			{second_player}.name gets + 5 HP."
+	
+	def initialize_grid(self):
+		self.generate_tiles()
+		while True:
+			self.find_matches_in_grid()
+			if np.sum(self.matches) == 0:
+				break
+			self.generate_tiles()
+	
 	def generate_tiles(self):
 		self.grid = np.random.randint(0, len(mana_indexes), self.grid_size)
 		
