@@ -8,7 +8,7 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 #Ensuring the socket is closed
 import atexit
 def close_socket():
-	print("closed")
+	print("Socket closed.")
 	sock.close()
 
 atexit.register(close_socket)

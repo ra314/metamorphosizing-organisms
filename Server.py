@@ -10,6 +10,9 @@ def create_player(client):
 	selection = (client.recv(BUF_SIZE)).decode('utf-8')
 	organisms = [stage_1_organisms[name] for name in selection.split()]
 	return Player(organisms[0], organisms[1], 80, name)
+	
+def end_session(client):
+	client.send("Session over.\n".encode())
 
 from PrepareSocket import *
 
@@ -26,4 +29,5 @@ player2 = create_player(client2)
 print(player1)
 print(player2)
 
-
+end_session(client1)
+end_session(client2)

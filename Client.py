@@ -9,5 +9,9 @@ while True:
 	os.system('cls' if os.name == 'nt' else 'clear')
 	data = sock.recv(BUF_SIZE).decode('utf-8')
 	print(data, end = '')
+	
+	if data == "Session Over":
+		break
+	
 	message = input()
 	sock.send(message.encode())
