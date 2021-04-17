@@ -1,6 +1,5 @@
 import random
-import Organism
-import Player
+from Player import Player
 import numpy as np
 from ManaType import mana_indexes 
 
@@ -26,15 +25,16 @@ class Game:
 			'abandoned town': "Abandoned Town: Evolving restores 10 HP"}
 		arena = random.choice(list(arenas.keys()))
 		if arena == 'stadium':
-			player.max_HP = 60
+			Player.max_HP = 60
 			player1.curr_HP = 60
 			player2.curr_HP = 60
 			
 		elif arena == 'forest valley':
-			Organism.berries_to_evolve -= 1
+			Player.berries_to_evolve -= 1
 			
 		elif arena == 'abandoned town':
-			Organism.HP_restored_on_evolution = 10
+			Player.HP_restored_on_evolution = 10
+			
 		return arenas[arena]
 			
 	def select_first_player(self):
