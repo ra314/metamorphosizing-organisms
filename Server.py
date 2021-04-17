@@ -28,16 +28,16 @@ def initialize_organisms():
 	
 mana_types = ('fire', 'electric', 'water', 'grass')
 stage_1_organisms = initialize_organisms()
-organism_choices = '\n\n'.join([f"{index} {str(organism)} {str(organism.getAbility())}" 
+organism_choices = '\n\n'.join([f"{index} {str(organism)} \n{str(organism.getAbility())}" 
 	for index, organism in enumerate(stage_1_organisms)])
 		
 def create_player(client):
 	client.send("Send name: ".encode())
 	name = (client.recv(BUF_SIZE)).decode('utf-8')
-	client.send(f"Pick 2 organisms. Enter number separated by spaces.\n{organism_choices}".encode())
-	organism_indexes = [int(index) for index in ((client.recv(BUF_SIZE)).decode('utf-8')).split()]
-	return Player(stage_1_organisms[organism_indexes[0]], stage_1_organisms[organism_indexes[1]]
-		80, name)
+	client.send(f"Pick 2 organisms. eg '1 3'.\n{organism_choices}\n\n".encode())
+	selection = (client.recv(BUF_SIZE)).decode('utf-8')
+	organisms = [stage_1_organisms[int(index)] for index in selection.split()]
+	return Player(organisms[0], organisms[1], 80, name)
 
 from prepare_socket import *
 
@@ -48,4 +48,7 @@ client1, addr1 = sock.accept()
 client2, addr2 = sock.accept()
 
 player1 = create_player(client1)
-player2 =create_player(client2)
+player2 = create_player(client2)
+
+print(player1)
+print(player2)
