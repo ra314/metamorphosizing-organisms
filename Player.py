@@ -7,4 +7,4 @@ class Player:
 		self.name = name
 		
 	def __str__(self):
-		return f"{name} {str(organism1)} {str(organism2)}"
+		return f"{self.name} {str(self.organism1)} {str(self.organism2)}"
