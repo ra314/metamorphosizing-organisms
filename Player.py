@@ -5,3 +5,6 @@ class Player:
 		self.HP = HP
 		self.num_berries = 0
 		self.name = name
+		
+	def __str__(self):
+		return f"{name} {str(organism1)} {str(organism2)}"
