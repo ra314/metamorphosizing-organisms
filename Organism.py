@@ -12,23 +12,23 @@ class Organism:
 	def __str__(self):
 		return self.name
 
-from ManaType import mana_types
+from ManaType import mana_indexes
 from Ability import abilities
 
 stage_2_organisms = {}
 stage_1_organisms = {}
 
 stage_2_organisms['Bonzire'] = Organism('Bonzumi', abilities['Flare_plus'], 
-	mana_types['fire'], None)
+	mana_indexes['fire'], None)
 stage_1_organisms['Bonzumi'] = Organism('Bonzumi', abilities['Flare'], 
-	mana_types['fire'], stage_2_organisms['Bonzire'])
+	mana_indexes['fire'], stage_2_organisms['Bonzire'])
 
 stage_2_organisms['Sephanix'] = Organism('Sephanix', abilities['Hydro_Rush_plus'], 		
-	mana_types['water'], None)
+	mana_indexes['water'], None)
 stage_1_organisms['Pelijet'] = Organism('Pelijet', abilities['Hydro_Rush'], 
-	mana_types['water'], stage_2_organisms['Sephanix'])
+	mana_indexes['water'], stage_2_organisms['Sephanix'])
 
 stage_2_organisms['Karaggon'] = Organism('Karaggon', abilities['Heal_Leaf_plus'], 
-	mana_types['grass'], None)
+	mana_indexes['grass'], None)
 stage_1_organisms['Turtleisk'] = Organism('Turtleisk', abilities['Heal_Leaf'], 
-	mana_types['grass'], stage_2_organisms['Karaggon'])
+	mana_indexes['grass'], stage_2_organisms['Karaggon'])
