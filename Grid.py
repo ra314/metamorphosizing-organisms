@@ -1,21 +1,42 @@
 import numpy as np
+from ManaType import mana_indexes 
 
 class Grid:	
 	def __init__(self, size):
 		self.grid = np.zeros(grid_size)
 		self.matches = None
 		self.matches_per_type = None
+		self.display_buffer = []
 		
 	def __str__(self):
 		return self.grid
 		
+	def add_grid_to_buffer(self):
+		self.display_buffer.append(str(self.grid) + '\n'\
+			+ str(self.matches_per_type))
+		
 	def initialize_grid(self):
 		self.generate_tiles()
+		self.initialize_matches_per_type()
 		while True:
-			self.find_matches_in_grid()
-			if np.sum(self.matches) == 0:
+			if not self.find_matches_in_grid():
 				break
 			self.generate_tiles()
+		self.add_grid_to_buffer()
+	
+	def initialize_matches_per_type(self)
+		self.matches_per_type = np.zeros(len(mana_indexes))
+		
+	def match_grid(self):
+		self.initialize_matches_per_type()
+		while self.find_matches_in_grid():
+			self.find_and_remove_matches_tiles()
+			self.add_grid_to_buffer()
+			self.shift_tiles_down()
+			self.add_grid_to_buffer()
+			self.fill_matched_tiles()
+			self.add_grid_to_buffer()
+		return self.matches_per_type
 		
 	def generate_tiles(self):
 		self.grid = np.random.randint(0, len(mana_indexes), self.grid.shape)
@@ -46,6 +67,8 @@ class Grid:
 		for y in range(self.grid_size[0]):
 			for x in range(self.grid_size[1]):
 				match_tile(y,x)
+				
+		return np.sum(self.matches)
 				
 	def find_and_remove_matched_tiles(self):
 		for y in range(self.grid_size[0]):

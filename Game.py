@@ -1,5 +1,4 @@
 import random
-from queue import Queue
 from Player import Player
 from ManaType import mana_indexes 
 from Grid import Grid
@@ -12,7 +11,7 @@ class Game:
 		self.player1 = player1
 		self.player2 = player2
 		self.grid = Grid(self.grid_size)
-		self.display_buffer = Queue()
+		self.display_buffer = []
 		
 	def display(self)
 		return player1.display() + '\n'\
