@@ -1,4 +1,7 @@
 class Organism:			
+	berries_to_evolve = 4
+	HP_restored_on_evolution = 0
+	
 	def __init__(self, name, ability, mana_type, evolution):
 		self.name = name
 		self.ability = ability
@@ -12,8 +15,8 @@ class Organism:
 from ManaType import mana_types
 from Ability import abilities
 
-stage_1_organisms = {}
 stage_2_organisms = {}
+stage_1_organisms = {}
 
 stage_2_organisms['Bonzire'] = Organism('Bonzumi', abilities['Flare_plus'], 
 	mana_types['fire'], None)
