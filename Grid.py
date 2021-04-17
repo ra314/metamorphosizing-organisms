@@ -7,15 +7,16 @@ class Grid:
 		self.matches = None
 		self.matches_per_type = None
 		self.display_buffer = []
+		self.initialize_grid()
 		
 	def __str__(self):
-		return self.grid
+		return str(self.grid)
 		
-	def add_grid_to_buffer(self):
+	def __add_grid_to_buffer(self):
 		self.display_buffer.append(str(self.grid) + '\n'\
 			+ str(self.matches_per_type))
 		
-	def initialize_grid(self):
+	def __initialize_grid(self):
 		self.generate_tiles()
 		self.initialize_matches_per_type()
 		while True:
@@ -23,8 +24,11 @@ class Grid:
 				break
 			self.generate_tiles()
 		self.add_grid_to_buffer()
+		
+	def __generate_tiles(self):
+		self.grid = np.random.randint(0, len(mana_indexes), self.grid.shape)
 	
-	def initialize_matches_per_type(self)
+	def __initialize_matches_per_type(self)
 		self.matches_per_type = np.zeros(len(mana_indexes))
 		
 	def match_grid(self):
@@ -38,10 +42,7 @@ class Grid:
 			self.add_grid_to_buffer()
 		return self.matches_per_type
 		
-	def generate_tiles(self):
-		self.grid = np.random.randint(0, len(mana_indexes), self.grid.shape)
-		
-	def find_matches_in_grid(self):
+	def __find_matches_in_grid(self):
 		self.matches = np.zeros(self.grid_size)
 		
 		def match_tile(y,x):
@@ -70,7 +71,7 @@ class Grid:
 				
 		return np.sum(self.matches)
 				
-	def find_and_remove_matched_tiles(self):
+	def __find_and_remove_matched_tiles(self):
 		for y in range(self.grid_size[0]):
 			for x in range(self.grid_size[1]):
 				if self.matches[y,x]:
@@ -79,7 +80,7 @@ class Grid:
 					#Mark tiles as removed
 					self.grid[y,x] = -1
 					
-	def shift_tiles_down(self):
+	def __shift_tiles_down(self):
 		for y in range(self.grid_size[0]):
 			for x in range(self.grid_size[1]):
 				#If the current tile is matched, pull down the closest unmatched tile above
@@ -91,7 +92,7 @@ class Grid:
 						self.grid[y,x] = self.grid[temp_y,x]
 						self.grid[temp_y,x] = -1
 	
-	def fill_matched_tiles(self):
+	def __fill_matched_tiles(self):
 		for y in range(self.grid_size[0]):
 			for x in range(self.grid_size[1]):
 				#If the tile is matched, generate a random one
