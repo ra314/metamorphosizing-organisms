@@ -26,3 +26,27 @@ class Ability:
 		
 	def __str__(self):
 		return self.description
+		
+abilities = {}
+abilities['Flare_plus'] = 
+	Ability('Flare+: Attacks for 25 HP and matches 2 random columns.', 
+	(0,5), ((1,-1),(1,-1)), 0, False, None, None, 8)
+abilities['Flare'] = 
+	Ability('Flare: Attacks for 20 HP and matches a random column.', 
+	(0,20), ((1,-1)), 0, False, None, None, 8)
+	
+abilities['Hydro_Rush_plus'] = 
+	Ability('Hydro Rush+: Attacks for 20 HP and converts 3 random tiles to Water.', 
+	(0,20), None, 3, False, None, None, 6)
+abilities['Hydro_Rush'] = 
+	Ability('Hydro Rush: Attacks for 10 HP and converts 2 random tiles to Water.', 
+	(0,10), None, 2, False, None, None, 6)
+	
+abilities['Heal_Leaf_plus'] = 
+	Ability('Heal Leaf+: Attacks for 15HP and heals you for 15HP.', 
+	(10,10), None, 0, False, None, None, 6)
+abilities['Heal_Leaf'] = 
+	Ability('Heal Leaf: Attacks for 10HP and heals you for 10HP.', 
+	(10,10), None, 0, False, None, None, 6)
+		
+	
