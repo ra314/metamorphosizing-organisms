@@ -1,5 +1,6 @@
 from Organism import Organism
 from Ability import Ability
+from Player import Player
 
 def initialize_organisms():
 	Flare_plus = Ability('Flare+: Attacks for 25 HP and matches 2 random columns.', 
@@ -27,15 +28,16 @@ def initialize_organisms():
 	
 mana_types = ('fire', 'electric', 'water', 'grass')
 stage_1_organisms = initialize_organisms()
-organism_choices = '\n'.join([f"{index} {str(organism)}" 
+organism_choices = '\n\n'.join([f"{index} {str(organism)} {str(organism.getAbility())}" 
 	for index, organism in enumerate(stage_1_organisms)])
 		
 def create_player(client):
 	client.send("Send name: ".encode())
 	name = (client.recv(BUF_SIZE)).decode('utf-8')
-	client.send(f"Pick organism: \n{organism_choices}".encode())
-	organism = (client.recv(BUF_SIZE)).decode('utf-8')
-	print(name, organism)
+	client.send(f"Pick 2 organisms. Enter number separated by spaces.\n{organism_choices}".encode())
+	organism_indexes = [int(index) for index in ((client.recv(BUF_SIZE)).decode('utf-8')).split()]
+	return Player(stage_1_organisms[organism_indexes[0]], stage_1_organisms[organism_indexes[1]]
+		80, name)
 
 from prepare_socket import *
 
@@ -45,5 +47,5 @@ sock.listen()
 client1, addr1 = sock.accept()
 client2, addr2 = sock.accept()
 
-create_player(client1)
-create_player(client2)
+player1 = create_player(client1)
+player2 =create_player(client2)
