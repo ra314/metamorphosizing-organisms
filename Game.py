@@ -12,6 +12,8 @@ class Game:
 		self.player1 = player1
 		self.player2 = player2
 		self.grid = None
+		self.matches = None
+		self.matches_per_type = np.zeros(len(mana_indexes))
 	
 	def randomise_arena(self):
 		arena = random.choice(['stadium', 'forest valley', 'abandoned town'])
@@ -34,8 +36,8 @@ class Game:
 	def generate_tiles(self):
 		self.grid = np.random.randint(0, len(mana_indexes), self.grid_size)
 		
-	def find_grid_matches(self):
-		matches = np.zeros(self.grid_size)
+	def find_matches_in_grid(self):
+		self.matches = np.zeros(self.grid_size)
 		
 		def match_tile(y,x):
 			curr_tile = self.grid[y,x]
@@ -44,28 +46,49 @@ class Game:
 			if y-2 >= 0:
 				if self.grid[y-1][x] == curr_tile and \
 					self.grid[y-2][x] == curr_tile:
-					matches[y,x] = 1
-					matches[y-1,x] = 1
-					matches[y-2,x] = 1
+					self.matches[y,x] = 1
+					self.matches[y-1,x] = 1
+					self.matches[y-2,x] = 1
 			
 			#Check for matches to the left of the curr tile
 			if x-2 >= 0:
 				if self.grid[y][x-1] == curr_tile and \
 					self.grid[y][x-2] == curr_tile:
-					matches[y,x] = 1
-					matches[y,x-1] = 1
-					matches[y,x-2] = 1
+					self.matches[y,x] = 1
+					self.matches[y,x-1] = 1
+					self.matches[y,x-2] = 1
 		
 		#Check for matches at each tile		
 		for y in range(self.grid_size[0]):
 			for x in range(self.grid_size[1]):
 				match_tile(y,x)
-		
-		#Count the number of matches for each tile type
-		matches_per_type = np.zeros(len(mana_indexes))
+					
+	def find_and_remove_matched_tiles(self):
 		for y in range(self.grid_size[0]):
 			for x in range(self.grid_size[1]):
-				if matches[y,x]:
-					matches_per_type[grid[y,x]] += 1
+				if self.matches[y,x]:
+					#Count the number of matches for each tile type
+					self.matches_per_type[self.grid[y,x]] += 1
+					#Mark tiles as removed
+					self.grid[y,x] = -1
+					
+	def shift_tiles_down(self):
+		for y in range(self.grid_size[0]):
+			for x in range(self.grid_size[1]):
+				#If the current tile is matched, pull down the closest unmatched tile above
+				if self.grid[y,x] == -1:
+					temp_y = y-1
+					while temp_y >= 0 and self.grid[temp_y,x] == -1:
+						temp_y -= 1
+					if temp_y >= 0:
+						self.grid[y,x] = self.grid[temp_y,x]
+						self.grid[temp_y,x] = -1
+	
+	def fill_matched_tiles(self):
+		for y in range(self.grid_size[0]):
+			for x in range(self.grid_size[1]):
+				#If the tile is matched, generate a random one
+				if self.grid[y,x] == -1:
+					self.grid[y,x] = random.randint(0, len(mana_indexes))
 			
-		return matches
+	
