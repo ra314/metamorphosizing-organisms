@@ -2,6 +2,7 @@ from Organism import Organism, stage_1_organisms
 from Player import Player
 from Game import Game
 from copy import deepcopy
+from time import sleep
 
 def create_player(client):
 	client.send("Send name: ".encode())
@@ -12,6 +13,11 @@ def create_player(client):
 	selection = (client.recv(BUF_SIZE)).decode('utf-8')
 	organisms = [deepcopy(stage_1_organisms[name]) for name in selection.split()]
 	return Player(organisms[0], organisms[1], name)
+	
+def broadcast(client1, client2, message, sleep_time):
+	client1.send(message.encode())
+	client2.send(message.encode())
+	sleep(sleep_time)
 	
 def end_session(client):
 	client.send("Session over.\n".encode())
@@ -31,8 +37,19 @@ player2 = create_player(client2)
 print(player1)
 print(player2)
 
+#Creating a game, randomising the arena and broadcasting it
 game = Game(player1, player2)
-game.randomise_arena()
+display = game.randomise_arena()
+broadcast(client1, client2, message, 3)
 
+#Selecting and broadcasting the first player
+display = game.select_first_player()
+broadcast(client1, client2, message, 2)
+
+#Gameplay loop
+game.initialize_grid()
+
+
+#Ending connections with clients
 end_session(client1)
 end_session(client2)
