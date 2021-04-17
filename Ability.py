@@ -24,5 +24,5 @@ class Ability:
 		#amount of mana needed to activate ability
 		self.num_mana_to_activate = num_mana_to_activate
 		
-	def get_description(self):
+	def __str__(self):
 		return self.description
