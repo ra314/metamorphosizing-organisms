@@ -1,7 +1,4 @@
-class Organism:			
-	berries_to_evolve = 4
-	HP_restored_on_evolution = 0
-	
+class Organism:
 	def __init__(self, name, ability, mana_type, evolution):
 		self.name = name
 		self.ability = ability
@@ -20,6 +17,9 @@ class Organism:
 		self.name = self.evolution.name
 		self.ability = self.evolution.ability
 		self.evolution = None
+		
+	def change_num_mana(self, delta):
+		self.num_mana = (delta + self.num_mana) % self.ability.num_mana_to_activate
 
 from ManaType import mana_indexes
 from Ability import abilities
