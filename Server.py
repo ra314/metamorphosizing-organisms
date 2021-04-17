@@ -55,6 +55,14 @@ broadcast(client1, client2, message, 2)
 #Gameplay loop
 game.initialize_grid()
 
+#TODO
+Game object has a state
+The state can either be displaying or requesting input from a specific player.
+If the state is display, then display and get the next state
+If the state is to get input, then ask the client for input.
+Make it so that clients know when they need to respond and when they don't need to, so they're not stuck.
+
+
 
 #Ending connections with clients
 end_session(client1)
