@@ -13,9 +13,13 @@ class Grid:
 	def __str__(self):
 		return str(self._grid)
 
-	def _update_buffer(self):
-		self.display_buffer.append(str(self._grid) + '\n' \
-								   + str(self._matches_per_type))
+	def _flush_grid_to_buffer(self):
+		self.display_buffer.append(
+			f"Grid: \n"
+			f"{self._grid} \n"
+			f"Matches made: \n"
+			f"{np.arange(len(self._matches_per_type))} \n"
+			f"{self._matches_per_type}")
 
 	def _initialize_grid(self):
 		self._generate_tiles()
@@ -24,23 +28,23 @@ class Grid:
 			if not self._find_matches_in_grid():
 				break
 			self._generate_tiles()
-		self._update_buffer()
+		self._flush_grid_to_buffer()
 
 	def _generate_tiles(self):
 		self._grid = np.random.randint(0, len(mana_indexes), self._grid.shape)
 
 	def _initialize_matches_per_type(self):
-		self._matches_per_type = np.zeros(len(mana_indexes))
+		self._matches_per_type = np.zeros(len(mana_indexes)).astype('int')
 
 	def match_grid(self):
 		self._initialize_matches_per_type()
 		while self._find_matches_in_grid():
 			self._find_and_remove_matched_tiles()
-			self._update_buffer()
+			self._flush_grid_to_buffer()
 			self._shift_tiles_down()
-			self._update_buffer()
+			self._flush_grid_to_buffer()
 			self._fill_matched_tiles()
-			self._update_buffer()
+			self._flush_grid_to_buffer()
 		return self._matches_per_type
 
 	def _find_matches_in_grid(self):
@@ -100,4 +104,5 @@ class Grid:
 					
 	def swap(self, x1, y1, x2, y2):
 		self._grid[y1,x1], self._grid[y2,x2] = self._grid[y2,x2], self._grid[y1,x1]
-		self._update_buffer()
+		self._flush_grid_to_buffer()
+		self.match_grid()
