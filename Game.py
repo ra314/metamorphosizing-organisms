@@ -16,7 +16,12 @@ class Game:
 		self._start()
 
 	def request_move(self):
-		return self._curr_player.name, self._curr_player.get_actions()
+		actions_str = ["Swap 2 tiles"]
+		actions = [lambda x1, y1, x2, y2: self._grid.swap(x1, y1, x2, y2)]
+		player_actions_str, player_actions = self._curr_player.get_actions()
+		actions_str.extend(player_actions_str)
+		actions.extend(player_actions)
+		return self._curr_player.name, actions_str
 
 	def _start(self):
 		self._randomise_arena()

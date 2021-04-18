@@ -22,14 +22,17 @@ class Player:
 			f"{self.organisms[1].display()}"
 
 	def get_actions(self):
-		actions = ["Swap 2 tiles"]
+		actions_str = []
+		actions = []
 		if self.num_berries == self.berries_to_evolve:
-			for organism in self.organisms:
+			for index, organism in enumerate(self.organisms):
 				if organism.evolution:
-					actions.append(f"Evolve {organism.name}")
+					actions_str.append(f"Evolve {organism.name}")
+					actions.append(lambda : self.evolve_organism(index))
 				else:
-					actions.append(f"Boost {organism.name}")
-		return actions
+					actions_str.append(f"Boost {organism.name}")
+					actions.append(lambda : self.boost_organism(index))
+		return actions_str, actions
 
 	def change_HP(self, delta):
 		self.curr_HP = (delta + self.curr_HP) % self.max_HP
