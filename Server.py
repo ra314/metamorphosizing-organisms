@@ -20,7 +20,7 @@ def create_player(client):
 	return Player(organisms[0], organisms[1], name)
 	
 def broadcast(client1, client2, message):
-	message = message + "ENDENDEND"
+	message = message + separator
 	client1.send(message.encode())
 	client2.send(message.encode())
 	
@@ -31,7 +31,7 @@ def receive_and_send_client_action(clients, game):
 	client = clients[str(curr_player)]
 	client.send((
 		f"{game.display_buffer.pop(0)} \n\n"
-		f"{enumerate_choices(actions_str)}").encode())
+		f"{enumerate_choices(actions_str)}{separator}").encode())
 	response = (client.recv(BUF_SIZE)).decode('utf-8')
 	response = [int(num) for num in response.split()]
 	index = response[0]

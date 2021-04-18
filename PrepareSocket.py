@@ -13,3 +13,5 @@ def close_socket():
 	sock.close()
 
 atexit.register(close_socket)
+
+separator = "ENDENDEND"
