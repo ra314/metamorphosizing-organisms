@@ -13,7 +13,7 @@ def communicate():
 		data = data_buffer.pop(0)
 		print(data, end = "")
 		
-		if data == "Session Over":
+		if data == "Session Over.\n":
 			return 0
 		
 		#Sending back a message, if the input isn't empty

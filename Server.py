@@ -25,7 +25,7 @@ def broadcast(client1, client2, message):
 	client2.send(message.encode())
 	
 def end_session(client):
-	client.send("Session over.\n".encode())
+	client.send("Session Over.\n".encode())
 
 from PrepareSocket import *
 
