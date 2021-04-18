@@ -97,3 +97,9 @@ class Grid:
 				# If the tile is matched, generate a random one
 				if self._grid[y, x] == -1:
 					self._grid[y, x] = np.random.randint(0, len(mana_indexes))
+					
+	def swap(x1, y1, x2, y2):
+		temp = grid[y1,x1]
+		grid[y1,x1] = grid[y2,x2]
+		grid[y2,x2] = temp
+		self._update_buffer()
