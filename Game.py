@@ -17,16 +17,20 @@ class Game:
 		self._start()
 
 	def request_move(self):
-		actions_str = ["Swap 2 tiles"]
+		actions_str = ["Swap 2 tiles: (x1 y1 x2 y2)"]
 		self._actions = [lambda x1, y1, x2, y2: self._grid.swap(x1, y1, x2, y2)]
 		player_actions_str, player_actions = self._curr_player.get_actions()
 		actions_str.extend(player_actions_str)
 		self._actions.extend(player_actions)
 		return self._curr_player.name, actions_str
 		
-	def process_move(self, index):
-		self._actions[index]()
+	def process_move(self, index, additional_arguments):
+		if additional_arguments:
+			self._actions[index](additional_arguments)
+		else:
+			self._actions[index]()
 		self._actions = []
+		self.update_grid()
 
 	def _start(self):
 		self._randomise_arena()
