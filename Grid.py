@@ -24,6 +24,7 @@ class Grid:
 	def _initialize_grid(self):
 		self._generate_tiles()
 		self._initialize_matches_per_type()
+		# Ensuring there are no matches in the generated grid
 		while True:
 			if not self._find_matches_in_grid():
 				break

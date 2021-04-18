@@ -15,6 +15,7 @@ class Organism:
             f"mana: {mana_str}"
 
 	def evolve(self):
+		# Retain mana type and and num_mana, mutate to evolved organism
 		self.name = self.evolution.name
 		self.ability = self.evolution.ability
 		self.evolution = None

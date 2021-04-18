@@ -17,11 +17,19 @@ class Game:
 		self._start()
 
 	def request_move(self):
+		# Add the always available swap action
 		actions_str = ["Swap 2 tiles: (x1 y1 x2 y2)"]
 		self._actions = [lambda x1, y1, x2, y2: self._grid.swap(x1, y1, x2, y2)]
+		
+		# Getting and adding actions from the player
 		player_actions_str, player_actions = self._curr_player.get_actions()
 		actions_str.extend(player_actions_str)
+		
+		# Storing these actions temporarily
 		self._actions.extend(player_actions)
+		
+		# Flushing the grid and game state so that player and grid info is still avaialble
+		# Along with the enumerated actions at the bottom
 		self._grid._flush_grid_to_buffer()
 		self._flush_game_state_to_buffer()
 		return str(self._curr_player), actions_str
@@ -81,7 +89,9 @@ class Game:
 		players = list(self._players)
 		random.shuffle(players)
 		self._curr_player, self._next_player = players
+		# Giving the first player the default number of moves
 		self._curr_player.reset_moves()
+		# Giving the second player extra HP
 		self._next_player.curr_HP += 5
 		self.display_buffer.append(f'The first player is {self._curr_player}. \n'
 			f'{self._next_player} gets + 5 HP.')

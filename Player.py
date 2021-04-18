@@ -24,6 +24,7 @@ class Player:
 	def get_actions(self):
 		actions_str = []
 		actions = []
+		# Add evolution and boost actions where appropriate if the player has enough berries
 		if self._num_berries == self.berries_to_evolve:
 			for index, organism in enumerate(self._organisms):
 				if organism.evolution:
