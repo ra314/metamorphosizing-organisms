@@ -46,8 +46,8 @@ class Game:
 
     def _update_grid(self):
         while self._grid.display_buffer:
-            self.display_buffer.append(f'self._players[0].display() \n '
-                                       f'{self._players[1].display()} \n '
+            self.display_buffer.append(f'{self._players[0].display()} \n\n'
+                                       f'{self._players[1].display()} \n\n'
                                        f'{self._grid.display_buffer.pop(0)}')
 
     def _select_first_player(self):

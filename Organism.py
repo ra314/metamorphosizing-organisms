@@ -11,7 +11,8 @@ class Organism:
 		
 	def display(self):
 		mana_str = ('+' * self.num_mana) + ('-' * (self.ability.num_mana_to_activate - self.num_mana))
-		return self.name + '\n' + mana_str
+		return self.name + '\n'\
+			+ mana_str
 		
 	def evolve(self):
 		self.name = self.evolution.name

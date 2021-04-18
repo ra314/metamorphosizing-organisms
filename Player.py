@@ -9,7 +9,6 @@ class Player:
 		self.num_berries = None
 		self.name = name
 		self.curr_HP = self.max_HP
-		self.myTurn = False
 		self.moves = self.moves_per_turn
 		
 	def __str__(self):
@@ -24,10 +23,10 @@ class Player:
 		actions = ["Swap 2 tiles"]
 		if self.num_berries == self.berries_to_evolve:
 			for organism in self.organisms:
-			if organism.evolution != None:
-				actions.append(f"Evolve {organism.name}")
-			else:
-				actions.append(f"Boost {organism.name}")
+				if organism.evolution:
+					actions.append(f"Evolve {organism.name}")
+				else:
+					actions.append(f"Boost {organism.name}")
 		return actions
 		
 	def change_HP(self, delta):
