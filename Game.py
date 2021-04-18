@@ -22,14 +22,22 @@ class Game:
 		player_actions_str, player_actions = self._curr_player.get_actions()
 		actions_str.extend(player_actions_str)
 		self._actions.extend(player_actions)
-		return self._curr_player.name, actions_str
+		return str(self._curr_player), actions_str
 		
 	def process_move(self, index, additional_arguments):
+		#Unwrapping extra arguments
 		if additional_arguments:
-			self._actions[index](additional_arguments)
+			self._actions[index](*additional_arguments)
 		else:
 			self._actions[index]()
 		self._actions = []
+		
+		#Moving to the next player
+		self._curr_player.moves -= 1
+		if self._curr_player.moves == 0:
+			self._next_player.reset_moves()
+			self._curr_player, self._next_player = self._next_player, self._curr_player
+		
 		self.update_grid()
 
 	def _start(self):
@@ -68,6 +76,7 @@ class Game:
 		players = list(self._players)
 		random.shuffle(players)
 		self._curr_player, self._next_player = players
+		self._curr_player.reset_moves()
 		self._next_player.curr_HP += 5
-		self.display_buffer.append(f'The first player is {self._curr_player.name}. \n'
-			f'{self._next_player.name} gets + 5 HP.')
+		self.display_buffer.append(f'The first player is {self._curr_player}. \n'
+			f'{self._next_player} gets + 5 HP.')

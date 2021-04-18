@@ -98,8 +98,6 @@ class Grid:
 				if self._grid[y, x] == -1:
 					self._grid[y, x] = np.random.randint(0, len(mana_indexes))
 					
-	def swap(x1, y1, x2, y2):
-		temp = grid[y1,x1]
-		grid[y1,x1] = grid[y2,x2]
-		grid[y2,x2] = temp
+	def swap(self, x1, y1, x2, y2):
+		self._grid[y1,x1], self._grid[y2,x2] = self._grid[y2,x2], self._grid[y1,x1]
 		self._update_buffer()

@@ -28,7 +28,8 @@ def receive_and_send_client_action(clients, game):
 	curr_player, actions_str = game.request_move()
 	if not actions_str:
 		return 0
-	clients[str(curr_player)].send(f"{enumerate_choices(actions_str)}".encode())
+	client = clients[str(curr_player)]
+	client.send(f"{enumerate_choices(actions_str)}".encode())
 	response = (client.recv(BUF_SIZE)).decode('utf-8')
 	response = [int(num) for num in response.split()]
 	index = response[0]
