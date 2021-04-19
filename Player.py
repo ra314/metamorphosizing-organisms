@@ -36,10 +36,10 @@ class Player:
 		return actions_str, actions
 
 	def change_HP(self, delta):
-		self.curr_HP = (delta + self.curr_HP) % self.max_HP
+		self.curr_HP = max((delta + self.curr_HP), self.max_HP)
 
 	def change_num_berries(self, delta):
-		self._num_berries = (delta + self._num_berries) % self.berries_to_evolve
+		self._num_berries = max((delta + self._num_berries), self.berries_to_evolve)
 
 	def evolve_organism(self, organism_index):
 		self.change_HP(self.HP_restored_on_evolution)
@@ -50,3 +50,8 @@ class Player:
 		
 	def reset_moves(self):
 		self.moves = self.moves_per_turn
+		
+	def add_mana(self, matches_per_type):
+		for organism in self._organisms:
+			mana_gained = matches_per_type[organism.mana_type_index]
+			organism.change_num_mana(mana_gained)

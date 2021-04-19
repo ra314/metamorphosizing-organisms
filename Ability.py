@@ -32,10 +32,10 @@ class Ability:
 abilities = {}
 abilities['Flare_plus'] = \
 	Ability('Flare+: Attacks for 25 HP and matches 2 random columns.',
-			(0, 5), ((1, -1), (1, -1)), 0, False, None, None, 8)
+			(0, 5), ((0, -1), (0, -1)), 0, False, None, None, 8)
 abilities['Flare'] = \
 	Ability('Flare: Attacks for 20 HP and matches a random column.',
-			(0, 20), ((1, -1)), 0, False, None, None, 8)
+			(0, 20), ((0, -1)), 0, False, None, None, 8)
 
 abilities['Hydro_Rush_plus'] = \
 	Ability('Hydro Rush+: Attacks for 20 HP and converts 3 random tiles to Water.',

@@ -19,7 +19,7 @@ class Game:
 	def request_move(self):
 		# Add the always available swap action
 		actions_str = ["Swap 2 tiles: (x1 y1 x2 y2)"]
-		self._actions = [lambda x1, y1, x2, y2: self._grid.swap(x1, y1, x2, y2)]
+		self._actions = [lambda x1, y1, x2, y2: self._swap_tiles_in_grid(x1, y1, x2, y2)]
 		
 		# Getting and adding actions from the player
 		player_actions_str, player_actions = self._curr_player.get_actions()
@@ -30,7 +30,6 @@ class Game:
 		
 		# Flushing the grid and game state so that player and grid info is still avaialble
 		# Along with the enumerated actions at the bottom
-		self._grid._flush_grid_to_buffer()
 		self._flush_game_state_to_buffer()
 		return str(self._curr_player), actions_str
 		
@@ -48,12 +47,12 @@ class Game:
 			self._next_player.reset_moves()
 			self._curr_player, self._next_player = self._next_player, self._curr_player
 		
-		self._flush_grid_updates_to_buffer()
+		self._flush_game_states_to_buffer()
 
 	def _start(self):
 		self._randomise_arena()
 		self._select_first_player()
-		self._flush_grid_updates_to_buffer()
+		self._flush_game_states_to_buffer()
 
 	def _randomise_arena(self):
 		arenas = {'stadium': "Stadium: Each player has 60 starting HP",
@@ -76,12 +75,13 @@ class Game:
 
 		self.display_buffer.append(arenas[arena])
 		
-	def _flush_grid_updates_to_buffer(self):
+	def _flush_game_states_to_buffer(self):
+		# If the grid buffer is empty, flush it's current state to the buffer
+		if not self._grid.display_buffer:
+			self._grid.flush_grid_to_buffer(self)
+			
 		while self._grid.display_buffer:
-			self._flush_game_state_to_buffer()
-
-	def _flush_game_state_to_buffer(self):
-		self.display_buffer.append(f'{self._players[0].display()} \n\n'
+			self.display_buffer.append(f'{self._players[0].display()} \n\n'
 			f'{self._players[1].display()} \n\n'
 			f'{self._grid.display_buffer.pop(0)}')
 			
@@ -95,3 +95,10 @@ class Game:
 		self._next_player.curr_HP += 5
 		self.display_buffer.append(f'The first player is {self._curr_player}. \n'
 			f'{self._next_player} gets + 5 HP.')
+			
+	def _swap_tiles_in_grid(self, x1, y1, x2, y2):
+		matches_per_type = self._grid.swap(x1, y1, x2, y2)
+		self._flush_game_states_to_buffer()
+		self._curr_player.add_mana(matches_per_type)
+		self._flush_game_states_to_buffer()
+		

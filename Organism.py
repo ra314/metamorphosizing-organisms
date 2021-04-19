@@ -2,15 +2,15 @@ class Organism:
 	def __init__(self, name, ability, mana_type, evolution):
 		self.name = name
 		self.ability = ability
-		self.mana_type = mana_type
-		self.num_mana = 0
+		self.mana_type_index = mana_type
+		self._num_mana = 0
 		self.evolution = evolution
 
 	def __str__(self):
 		return self.name
 
 	def display(self):
-		mana_str = ('+' * self.num_mana) + ('-' * (self.ability.num_mana_to_activate - self.num_mana))
+		mana_str = ('+' * self._num_mana) + ('-' * (self.ability.num_mana_to_activate - self._num_mana))
 		return f"{self.name} \n" \
             f"mana: {mana_str}"
 
@@ -21,7 +21,7 @@ class Organism:
 		self.evolution = None
 
 	def change_num_mana(self, delta):
-	    self.num_mana = (delta + self.num_mana) % self.ability.num_mana_to_activate
+	    self._num_mana = max((delta + self._num_mana), self.ability.num_mana_to_activate)
 
 
 from ManaType import mana_indexes
