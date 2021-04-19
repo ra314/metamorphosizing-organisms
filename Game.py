@@ -30,7 +30,7 @@ class Game:
 		
 		# Flushing the grid and game state so that player and grid info is still avaialble
 		# Along with the enumerated actions at the bottom
-		self._flush_game_state_to_buffer()
+		self._flush_game_states_to_buffer()
 		return str(self._curr_player), actions_str
 		
 	def process_move(self, index, additional_arguments):
@@ -78,7 +78,7 @@ class Game:
 	def _flush_game_states_to_buffer(self):
 		# If the grid buffer is empty, flush it's current state to the buffer
 		if not self._grid.display_buffer:
-			self._grid.flush_grid_to_buffer(self)
+			self._grid.flush_grid_to_buffer()
 			
 		while self._grid.display_buffer:
 			self.display_buffer.append(f'{self._players[0].display()} \n\n'

@@ -21,7 +21,7 @@ class Organism:
 		self.evolution = None
 
 	def change_num_mana(self, delta):
-	    self._num_mana = max((delta + self._num_mana), self.ability.num_mana_to_activate)
+	    self._num_mana = min((delta + self._num_mana), self.ability.num_mana_to_activate)
 
 
 from ManaType import mana_indexes

@@ -36,10 +36,10 @@ class Player:
 		return actions_str, actions
 
 	def change_HP(self, delta):
-		self.curr_HP = max((delta + self.curr_HP), self.max_HP)
+		self.curr_HP = min((delta + self.curr_HP), self.max_HP)
 
 	def change_num_berries(self, delta):
-		self._num_berries = max((delta + self._num_berries), self.berries_to_evolve)
+		self._num_berries = min((delta + self._num_berries), self.berries_to_evolve)
 
 	def evolve_organism(self, organism_index):
 		self.change_HP(self.HP_restored_on_evolution)
