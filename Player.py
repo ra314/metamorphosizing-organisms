@@ -54,4 +54,5 @@ class Player:
 	def add_mana(self, matches_per_type):
 		for organism in self._organisms:
 			mana_gained = matches_per_type[organism.mana_type_index]
-			organism.change_num_mana(mana_gained)
+			mana_remaining = organism.change_num_mana(mana_gained)
+			matches_per_type[organism.mana_type_index] = mana_remaining

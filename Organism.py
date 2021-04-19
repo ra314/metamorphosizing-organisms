@@ -21,8 +21,16 @@ class Organism:
 		self.evolution = None
 
 	def change_num_mana(self, delta):
-	    self._num_mana = min((delta + self._num_mana), self.ability.num_mana_to_activate)
-
+		def clamp(lower_bound, x, upper_bound):
+			if x > upper_bound:
+				return upper_bound
+			elif x < lower_bound:
+				return lower_bound
+			else:
+				return x
+		overflow_or_underflow_amount = (self._num_mana + delta) % self.ability.num_mana_to_activate
+		self._num_mana = clamp(0, delta+self._num_mana, self.ability.num_mana_to_activate)
+		return overflow_or_underflow_amount
 
 from ManaType import mana_indexes
 from Ability import abilities
