@@ -1,8 +1,9 @@
 class Organism:
-	def __init__(self, name, ability, mana_type, evolution):
+	def __init__(self, name, ability, mana_type_index, evolution):
 		self.name = name
 		self.ability = ability
-		self.mana_type_index = mana_type
+		self.mana_type_index = mana_type_index
+		self.mana_type = mana_types[mana_type_index]
 		self._num_mana = 0
 		self.evolution = evolution
 
@@ -12,7 +13,7 @@ class Organism:
 	def display(self):
 		mana_str = ('+' * self._num_mana) + ('-' * (self.ability.num_mana_to_activate - self._num_mana))
 		return f"{self.name} \n" \
-            f"mana: {mana_str}"
+            f"{self.mana_type} ({self.mana_type_index}): {mana_str}"
 
 	def evolve(self):
 		# Retain mana type and and num_mana, mutate to evolved organism
@@ -32,7 +33,7 @@ class Organism:
 		self._num_mana = clamp(0, delta+self._num_mana, self.ability.num_mana_to_activate)
 		return overflow_or_underflow_amount
 
-from ManaType import mana_indexes
+from ManaType import mana_indexes, mana_types
 from Ability import abilities
 
 stage_2_organisms = {}
