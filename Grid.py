@@ -51,7 +51,6 @@ class Grid:
 			self._fill_matched_tiles()
 			self.game.draw()
 
-
 	def _find_matches_in_grid(self):
 		self._matches = np.zeros(self._grid.shape)
 
@@ -112,3 +111,29 @@ class Grid:
 
 	def add_game_reference_to_objects(self, game):
 		self._game = game
+
+	def _shape_in_grid(self, tile_match_shape, y, x):
+		# Start from the given seed and extend by the height and width of the shape
+		# Check if these parts of the shape are also within the grid
+		return y + tile_match_shape[0] < self._grid.shape[0] and x + tile_match_shape[1] < self._grid.shape[1]
+
+	def force_grid_match(self, tile_match_shape):
+		# Replace -1s with height and width of grid
+		if tile_match_shape[0] == -1:
+			tile_match_shape[0] = self._grid.shape[0]
+		if tile_match_shape[1] == -1:
+			tile_match_shape[1] = self._grid.shape[1]
+
+		# Pick a random tile and check that the shape is inside the grid
+		while True:
+			seed_y = np.random.randint(self._grid.shape[0])
+			seed_x = np.random.randint(self._grid.shape[1])
+			if self._shape_in_grid(self, tile_match_shape, seed_y, seed_x):
+				break
+
+		# Mark those tiles as matched
+		for y in range(seed_y, seed_y+tile_match_shape[0]):
+			for x in range(seed_x, seed_x+tile_match_shape[1]):
+				self._grid[y, x] = -1
+
+		self._match_grid()

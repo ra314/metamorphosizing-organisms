@@ -114,3 +114,6 @@ class Game:
 		if organism.ability.HP_delta:
 			self._curr_player.change_HP(organism.ability.HP_delta[0])
 			self._next_player.change_HP(organism.ability.HP_delta[1])
+		# Matching tiles in a specific shape
+		if organism.ability.tile_match_shape:
+			self._grid.force_grid_match(organism.ability.tile_match_shape)

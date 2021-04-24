@@ -9,7 +9,8 @@ class Ability:
 		"(amount to increase player's HP, amount to increase opponent's HP)"
 
 		self.tile_match_shape = tile_match_shape
-		"list. contains tuples which contains x and y coordinates of the shapes to match."
+		"tuple of len 3. " \
+		"height, width and number of shapes"
 
 		self.num_tiles_to_convert = num_tiles_to_convert
 
@@ -33,10 +34,10 @@ class Ability:
 abilities = {}
 abilities['Flare_plus'] = \
 	Ability('Flare+: Attacks for 25 HP and matches 2 random columns.',
-			(0, -25), ((0, -1), (0, -1)), 0, False, None, None, 8)
+			(0, -25), (-1, 1, 2), 0, False, None, None, 8)
 abilities['Flare'] = \
 	Ability('Flare: Attacks for 20 HP and matches a random column.',
-			(0, -20), ((0, -1)), 0, False, None, None, 8)
+			(0, -20), (-1, 1, 1), 0, False, None, None, 8)
 
 abilities['Hydro_Rush_plus'] = \
 	Ability('Hydro Rush+: Attacks for 20 HP and converts 3 random tiles to Water.',
