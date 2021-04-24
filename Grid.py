@@ -106,7 +106,7 @@ class Grid:
 					
 	def swap(self, x1, y1, x2, y2):
 		self._grid[y1,x1], self._grid[y2,x2] = self._grid[y2,x2], self._grid[y1,x1]
-		self.game.draw()
+		self._game.draw()
 		self._match_grid()
 
 	def add_game_reference_to_objects(self, game):

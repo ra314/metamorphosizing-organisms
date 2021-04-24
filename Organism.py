@@ -11,10 +11,9 @@ class Organism:
 	def __str__(self):
 		return self.name
 
-	def display(self):
+	def draw(self):
 		mana_str = ('+' * self._num_mana) + ('-' * (self.ability.num_mana_to_activate - self._num_mana))
-		return f"{self.name} \n" \
-            f"{self.mana_type} ({self.mana_type_index}): {mana_str}"
+		return f"{self.name} ({self.mana_type_index}): {mana_str}"
 
 	def evolve(self):
 		# Retain mana type and and num_mana, mutate to evolved organism

@@ -81,9 +81,8 @@ class Game:
 		# Storing these actions temporarily
 		self._actions_buffer.extend(player_actions)
 
-		# Flushing the grid and game state so that player and grid info is still avaialble
-		# Along with the enumerated actions at the bottom
-		self._flush_game_states_to_buffer()
+		# Draw game and send available actions to server
+		self.draw()
 		return str(self._curr_player), actions_str
 
 	def process_move(self, index, player_inputs):

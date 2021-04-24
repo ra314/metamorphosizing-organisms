@@ -15,12 +15,12 @@ class Player:
 	def __str__(self):
 		return self._name
 
-	def display(self):
+	def draw(self):
 		HP_str = ('+' * int(self.curr_HP/5)) + ('-' * int((self.max_HP - self.curr_HP)/5))
 		return f"{self._name} \n" \
 			f"HP: {HP_str} \n" \
-			f"{self._organisms[0].display()} \n" \
-			f"{self._organisms[1].display()}"
+			f"{self._organisms[0].draw()} \n" \
+			f"{self._organisms[1].draw()}"
 
 	def get_actions(self):
 		actions_str = []
