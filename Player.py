@@ -39,14 +39,17 @@ class Player:
 	def change_HP(self, delta):
 		# Clamping HP
 		self.curr_HP = min(max(0, delta+self.curr_HP), self.max_HP)
+		self.game.draw()
 
 	def change_num_berries(self, delta):
 		# Clamping berries
 		self._num_berries = min(max(0, delta+self.curr_HP), self.berries_to_evolve)
+		self.game.draw()
 
 	def evolve_organism(self, organism_index):
 		self.change_HP(self.HP_restored_on_evolution)
 		self._organisms[organism_index].evolve()
+		self.game.draw()
 
 	def boost_organism(self, organism_index):
 		self._organisms[organism_index].change_num_mana(self._num_berries)

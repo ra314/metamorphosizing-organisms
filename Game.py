@@ -13,7 +13,7 @@ class Game:
 		self._next_player = None
 		self._grid = Grid(self.grid_size)
 		self.draw_buffer = []
-		self.activated_abilities = set()
+		self.activated_organisms = set()
 		self._actions_buffer = []
 		self._start()
 
@@ -97,8 +97,8 @@ class Game:
 		self._actions_buffer = []
 
 		# Activating abilities
-		for ability in self.activated_abilities:
-			self._process_ability(ability)
+		for organism in self.activated_organisms:
+			self._process_ability(organism)
 
 		# Moving to the next player if necessary
 		self._curr_player.moves -= 1
@@ -109,5 +109,8 @@ class Game:
 	def _swap_tiles_in_grid(self, x1, y1, x2, y2):
 		self._grid.swap(x1, y1, x2, y2)
 		
-	def _process_ability(self, ability):
-		pass
+	def _process_ability(self, organism):
+		# Changing HP
+		if organism.ability.HP_delta:
+			self._curr_player.change_HP(organism.ability.HP_delta[0])
+			self._next_player.change_HP(organism.ability.HP_delta[1])

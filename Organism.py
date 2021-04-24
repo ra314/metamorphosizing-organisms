@@ -28,7 +28,7 @@ class Organism:
 		self._num_mana = min(max(0, delta+self._num_mana), self.ability.num_mana_to_activate)
 		# Checking for activated abilities
 		if self._num_mana >= self.ability.num_mana_to_activate:
-			self._game.activated_abilities.add(self, self.ability)
+			self._game.activated_organisms.add(self)
 		# Returning the amount of unused mana
 		return abs(self._num_mana - prev_mana)
 
