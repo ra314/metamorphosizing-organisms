@@ -6,6 +6,7 @@ class Organism:
 		self.mana_type = mana_types[mana_type_index]
 		self._num_mana = 0
 		self.evolution = evolution
+		self._game = None
 
 	def __str__(self):
 		return self.name
@@ -22,16 +23,17 @@ class Organism:
 		self.evolution = None
 
 	def change_num_mana(self, delta):
-		def clamp(lower_bound, x, upper_bound):
-			if x > upper_bound:
-				return upper_bound
-			elif x < lower_bound:
-				return lower_bound
-			else:
-				return x
-		overflow_or_underflow_amount = (self._num_mana + delta) % self.ability.num_mana_to_activate
-		self._num_mana = clamp(0, delta+self._num_mana, self.ability.num_mana_to_activate)
-		return overflow_or_underflow_amount
+		# Clamping mana
+		prev_mana = self._num_mana
+		self._num_mana = min(max(0, delta+self._num_mana), self.ability.num_mana_to_activate)
+		# Checking for activated abilities
+		if self._num_mana >= self.ability.num_mana_to_activate:
+			self._game.activated_abilities.add(self, self.ability)
+		# Returning the amount of unused mana
+		return abs(self._num_mana - prev_mana)
+
+	def add_game_reference_to_objects(self, game):
+		self._game = game
 
 from ManaType import mana_indexes, mana_types
 from Ability import abilities

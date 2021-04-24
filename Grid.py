@@ -7,14 +7,14 @@ class Grid:
 		self._grid = np.zeros(grid_size)
 		self._matches = None
 		self._matches_per_type = None
-		self.display_buffer = []
+		self._game = None
 		self._initialize_grid()
 
 	def __str__(self):
 		return str(self._grid)
 
-	def flush_grid_to_buffer(self):
-		self.display_buffer.append(
+	def draw(self):
+		return (
 			f"Grid: \n"
 			f"{self._grid} \n"
 			f"Matches made: \n"
@@ -29,7 +29,6 @@ class Grid:
 			if not self._find_matches_in_grid():
 				break
 			self._generate_tiles()
-		self.flush_grid_to_buffer()
 
 	def _generate_tiles(self):
 		self._grid = np.random.randint(0, len(mana_indexes), self._grid.shape)
@@ -37,16 +36,21 @@ class Grid:
 	def _initialize_matches_per_type(self):
 		self._matches_per_type = np.zeros(len(mana_indexes)).astype('int')
 
-	def match_grid(self):
-		self._initialize_matches_per_type()
+	def _match_grid(self):
 		while self._find_matches_in_grid():
+			self._initialize_matches_per_type()
 			self._find_and_remove_matched_tiles()
-			self.flush_grid_to_buffer()
+			self.game.draw()
+
+			self._initialize_matches_per_type()
+			self.game.add_mana(self._matches_per_type)
+
 			self._shift_tiles_down()
-			self.flush_grid_to_buffer()
+			self.game.draw()
+
 			self._fill_matched_tiles()
-			self.flush_grid_to_buffer()
-		return self._matches_per_type
+			self.game.draw()
+
 
 	def _find_matches_in_grid(self):
 		self._matches = np.zeros(self._grid.shape)
@@ -72,8 +76,6 @@ class Grid:
 		for y in range(self._grid.shape[0]):
 			for x in range(self._grid.shape[1]):
 				match_tile(y, x)
-
-		return np.sum(self._matches)
 
 	def _find_and_remove_matched_tiles(self):
 		for y in range(self._grid.shape[0]):
@@ -105,5 +107,8 @@ class Grid:
 					
 	def swap(self, x1, y1, x2, y2):
 		self._grid[y1,x1], self._grid[y2,x2] = self._grid[y2,x2], self._grid[y1,x1]
-		self.flush_grid_to_buffer()
-		return self.match_grid()
+		self.game.draw()
+		self._match_grid()
+
+	def add_game_reference_to_objects(self, game):
+		self._game = game

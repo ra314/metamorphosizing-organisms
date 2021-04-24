@@ -10,6 +10,7 @@ class Player:
 		self._name = name
 		self.curr_HP = self.max_HP
 		self.moves = 0
+		self._game = None
 
 	def __str__(self):
 		return self._name
@@ -29,17 +30,19 @@ class Player:
 			for index, organism in enumerate(self._organisms):
 				if organism.evolution:
 					actions_str.append(f"Evolve {organism.name}")
-					actions.append(lambda : self.evolve_organism(index))
+					actions.append(lambda: self.evolve_organism(index))
 				else:
 					actions_str.append(f"Boost {organism.name}")
-					actions.append(lambda : self.boost_organism(index))
+					actions.append(lambda: self.boost_organism(index))
 		return actions_str, actions
 
 	def change_HP(self, delta):
-		self.curr_HP = min((delta + self.curr_HP), self.max_HP)
+		# Clamping HP
+		self.curr_HP = min(max(0, delta+self.curr_HP), self.max_HP)
 
 	def change_num_berries(self, delta):
-		self._num_berries = min((delta + self._num_berries), self.berries_to_evolve)
+		# Clamping berries
+		self._num_berries = min(max(0, delta+self.curr_HP), self.berries_to_evolve)
 
 	def evolve_organism(self, organism_index):
 		self.change_HP(self.HP_restored_on_evolution)
@@ -52,7 +55,15 @@ class Player:
 		self.moves = self.moves_per_turn
 		
 	def add_mana(self, matches_per_type):
+		# Collecting berries
+		self.change_num_berries(matches_per_type[0])
+		# Distributing mana
 		for organism in self._organisms:
 			mana_gained = matches_per_type[organism.mana_type_index]
 			mana_remaining = organism.change_num_mana(mana_gained)
 			matches_per_type[organism.mana_type_index] = mana_remaining
+
+	def add_game_reference_to_objects(self, game):
+		self._game = game
+		for organism in self._organisms:
+			organism.add_game_reference_to_objects(game)

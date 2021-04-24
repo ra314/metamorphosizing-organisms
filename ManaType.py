@@ -1,2 +1,2 @@
-mana_indexes = {'fire': 0, 'electric': 1, 'water': 2, 'grass': 3, 'psychic': 4}
-mana_types = ['fire', 'electric', 'water', 'grass', 'psychic']
+mana_indexes = {'berry': 0, 'fire': 1, 'electric': 2, 'water': 3, 'grass': 4, 'psychic': 5}
+mana_types = ['berry', 'fire', 'electric', 'water', 'grass', 'psychic']

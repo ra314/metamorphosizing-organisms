@@ -12,47 +12,27 @@ class Game:
 		self._curr_player = None
 		self._next_player = None
 		self._grid = Grid(self.grid_size)
-		self.display_buffer = []
-		self._actions = []
+		self.draw_buffer = []
+		self.activated_abilities = set()
+		self._actions_buffer = []
 		self._start()
 
-	def request_move(self):
-		# Add the always available swap action
-		actions_str = ["Swap 2 tiles: (x1 y1 x2 y2)"]
-		self._actions = [lambda x1, y1, x2, y2: self._swap_tiles_in_grid(x1, y1, x2, y2)]
-		
-		# Getting and adding actions from the player
-		player_actions_str, player_actions = self._curr_player.get_actions()
-		actions_str.extend(player_actions_str)
-		
-		# Storing these actions temporarily
-		self._actions.extend(player_actions)
-		
-		# Flushing the grid and game state so that player and grid info is still avaialble
-		# Along with the enumerated actions at the bottom
-		self._flush_game_states_to_buffer()
-		return str(self._curr_player), actions_str
-		
-	def process_move(self, index, additional_arguments):
-		# Unwrapping extra arguments
-		if additional_arguments:
-			self._actions[index](*additional_arguments)
-		else:
-			self._actions[index]()
-		self._actions = []
-		
-		# Moving to the next player
-		self._curr_player.moves -= 1
-		if self._curr_player.moves == 0:
-			self._next_player.reset_moves()
-			self._curr_player, self._next_player = self._next_player, self._curr_player
-		
-		self._flush_game_states_to_buffer()
+	def draw(self):
+		self.draw_buffer.append(
+			f'{self._players[0].draw()} \n\n'
+			f'{self._players[1].draw()} \n\n'
+			f'{self._grid.draw()}')
 
 	def _start(self):
+		self._add_game_reference_to_objects()
 		self._randomise_arena()
 		self._select_first_player()
-		self._flush_game_states_to_buffer()
+		self.draw()
+
+	def _add_game_reference_to_objects(self):
+		for player in self._players:
+			player.add_game_reference_to_objects(self)
+		self._grid.add_game_reference_to_objects(self)
 
 	def _randomise_arena(self):
 		arenas = {'stadium': "Stadium: Each player has 60 starting HP",
@@ -73,17 +53,7 @@ class Game:
 		elif arena == 'abandoned town':
 			Player.HP_restored_on_evolution = 10
 
-		self.display_buffer.append(arenas[arena])
-		
-	def _flush_game_states_to_buffer(self):
-		# If the grid buffer is empty, flush it's current state to the buffer
-		if not self._grid.display_buffer:
-			self._grid.flush_grid_to_buffer()
-			
-		while self._grid.display_buffer:
-			self.display_buffer.append(f'{self._players[0].display()} \n\n'
-			f'{self._players[1].display()} \n\n'
-			f'{self._grid.display_buffer.pop(0)}')
+		self.draw_buffer.append(arenas[arena])
 			
 	def _select_first_player(self):
 		players = list(self._players)
@@ -93,12 +63,51 @@ class Game:
 		self._curr_player.reset_moves()
 		# Giving the second player extra HP
 		self._next_player.curr_HP += 5
-		self.display_buffer.append(f'The first player is {self._curr_player}. \n'
+		self.draw_buffer.append(f'The first player is {self._curr_player}. \n'
 			f'{self._next_player} gets + 5 HP.')
-			
-	def _swap_tiles_in_grid(self, x1, y1, x2, y2):
-		matches_per_type = self._grid.swap(x1, y1, x2, y2)
-		self._flush_game_states_to_buffer()
+
+	def add_mana(self, matches_per_type):
 		self._curr_player.add_mana(matches_per_type)
+
+	def request_move(self):
+		# Add the always available swap action
+		actions_str = ["Swap 2 tiles: (x1 y1 x2 y2)"]
+		self._actions_buffer = [self._swap_tiles_in_grid]
+
+		# Getting and adding actions from the player
+		player_actions_str, player_actions = self._curr_player.get_actions()
+		actions_str.extend(player_actions_str)
+
+		# Storing these actions temporarily
+		self._actions_buffer.extend(player_actions)
+
+		# Flushing the grid and game state so that player and grid info is still avaialble
+		# Along with the enumerated actions at the bottom
 		self._flush_game_states_to_buffer()
+		return str(self._curr_player), actions_str
+
+	def process_move(self, index, player_inputs):
+		# Parsing the selected action
+		action = self._actions_buffer[index]
+		if action.__name__ == "_swap_tiles_in_grid":
+			action(*player_inputs)
+		else:
+			action()
+		# Deleting the actions buffer
+		self._actions_buffer = []
+
+		# Activating abilities
+		for ability in self.activated_abilities:
+			self._process_ability(ability)
+
+		# Moving to the next player if necessary
+		self._curr_player.moves -= 1
+		if self._curr_player.moves == 0:
+			self._next_player.reset_moves()
+			self._curr_player, self._next_player = self._next_player, self._curr_player
+
+	def _swap_tiles_in_grid(self, x1, y1, x2, y2):
+		self._grid.swap(x1, y1, x2, y2)
 		
+	def _process_ability(self, ability):
+		pass

@@ -30,7 +30,7 @@ def receive_and_send_client_action(clients, game):
 		return 0
 	client = clients[str(curr_player)]
 	client.send((
-		f"{game.display_buffer.pop(0)} \n\n"
+		f"{game.draw_buffer.pop(0)} \n\n"
 		f"{enumerate_choices(actions_str)}{separator}").encode())
 	response = (client.recv(BUF_SIZE)).decode('utf-8')
 	response = [int(num) for num in response.split()]
@@ -58,8 +58,8 @@ game = Game(player1, player2)
 
 #Gameplay Loop
 while True:
-	while game.display_buffer:
-		broadcast(client1, client2, game.display_buffer.pop(0))
+	while game.draw_buffer:
+		broadcast(client1, client2, game.draw_buffer.pop(0))
 	if receive_and_send_client_action(clients, game) == 0:
 		break
 
