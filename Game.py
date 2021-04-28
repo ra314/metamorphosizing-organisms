@@ -132,6 +132,13 @@ class Game:
 			self._curr_player.change_HP(mana_delta[0])
 			self._next_player.change_HP(mana_delta[1])
 
-		# Converting tiles
-		if organism.ability.num_tiles_to_convert:
-			self._grid.convert_tiles(organism.mana_type_index, organism.ability.num_tiles_to_convert)
+    # Converting tiles
+      if organism.ability.num_tiles_to_convert:
+        self._grid.convert_tiles(organism.mana_type_index, organism.ability.num_tiles_to_convert)
+		
+		# Changing Berries
+		if organism.ability.berries_to_steal:
+			num_berries = min(organism.ability.berries_to_steal, self._next_player.berries)
+			# Steal the berries from the intented target
+			self._curr_player.change_num_berries(num_berries))
+			self._next_player.change_num_berries(-num_berries)
