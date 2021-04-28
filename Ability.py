@@ -51,10 +51,10 @@ abilities['Hydro_Rush'] = \
             (0, -10), 0, None, 2, False, 0, 0, None, 6)
 
 abilities['Heal_Leaf_plus'] = \
-    Ability('Heal Leaf+: Attacks for 15HP and heals you for 15HP.',
+    Ability('Heal Leaf+: Attacks for 15 HP and heals you for 15 HP.',
             (15, -15), 0, None, 0, False, 0, 0, None, 6)
 abilities['Heal_Leaf'] = \
-    Ability('Heal Leaf: Attacks for 10HP and heals you for 10HP.',
+    Ability('Heal Leaf: Attacks for 10 HP and heals you for 10 HP.',
             (10, -10), 0, None, 0, False, 0, 0, None, 6)
 
 abilities['Electroclaw_plus'] = \

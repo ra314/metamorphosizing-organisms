@@ -40,7 +40,7 @@ from Ability import abilities
 stage_2_organisms = {}
 stage_1_organisms = {}
 
-stage_2_organisms['Bonzire'] = Organism('Bonzumi', abilities['Flare_plus'],
+stage_2_organisms['Bonzire'] = Organism('Bonzire', abilities['Flare_plus'],
                                         mana_indexes['fire'], None)
 stage_1_organisms['Bonzumi'] = Organism('Bonzumi', abilities['Flare'],
                                         mana_indexes['fire'], stage_2_organisms['Bonzire'])

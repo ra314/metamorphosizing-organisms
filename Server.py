@@ -4,7 +4,7 @@ from Game import Game
 from copy import deepcopy
 
 def enumerate_choices(choices):
-	output = ""
+	output = "Pick to number to select a choice\n"
 	for index, choice in enumerate(choices):
 		output += f"[{index}]: {choice}\n"
 	return output
@@ -14,7 +14,7 @@ def create_player(client):
 	name = (client.recv(BUF_SIZE)).decode('utf-8')
 	
 	organism_choices = [str(organism) + '\n' + str(organism.ability) for organism in stage_1_organisms.values()]
-	client.send(f"{enumerate_choices(organism_choices)}\n".encode())
+	client.send(f"{enumerate_choices(organism_choices)}\nSelect 2 eg (1 2)\n".encode())
 	indexes = (client.recv(BUF_SIZE)).decode('utf-8')
 	organisms = [deepcopy(list(stage_1_organisms.values())[int(index)]) for index in indexes.split()]
 	return Player(organisms[0], organisms[1], name)

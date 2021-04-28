@@ -13,6 +13,7 @@ class Player:
 		self._game = None
 		self._extra_move = False
 		self._extra_move_on_next_turn = False
+		self._delayed_HP_deltas = {}
 
 	def __str__(self):
 		return self._name
@@ -34,7 +35,7 @@ class Player:
 			for index, organism in enumerate(self._organisms):
 				if organism.evolution:
 					actions_str.append(f"Evolve {organism.name}")
-					actions.append(lambda: self.evolve_organism(index))
+					actions.append(lambda index = index: self.evolve_organism(index))
 				else:
 					actions_str.append(f"Boost {organism.name}")
 					actions.append(lambda: self.boost_organism(index))
@@ -54,19 +55,32 @@ class Player:
 		self.change_HP(self.HP_restored_on_evolution)
 		self._organisms[organism_index].evolve()
 		self._game.draw()
+		self._num_berries = 0
 
 	def boost_organism(self, organism_index):
 		self._organisms[organism_index].change_num_mana(self._num_berries)
+		self._num_berries = 0
 		
 	def reset_moves(self):
 		self.moves = self.moves_per_turn
-		if self.extra_move_on_next_turn:
+		self._extra_move = False
+
+		# Granting delayed extra move
+		if self._extra_move_on_next_turn:
 			self.moves += 1
 			self._extra_move_on_next_turn = False
 			self._extra_move = True
+
+		# Applying delayed HP_delta
+		for organism in self._delayed_HP_deltas.values():
+			HP_delta, turns_left = self._delayed_HP_deltas[organism]
+			self.change_HP(HP_delta)
+			turns_left -= 1
+			self._delayed_HP_deltas[organism][1] = turns_left
+			if not turns_left:
+				del self._delayed_HP_deltas[organism]
 		
 	def add_mana(self, matches_per_type):
-		print(matches_per_type)
 		# Collecting berries
 		self.change_num_berries(matches_per_type[0])
 		# Distributing mana
@@ -97,3 +111,9 @@ class Player:
 				self.moves += 1
 		else:
 			self._extra_move_on_next_turn = True
+
+	def add_delayed_HP_delta(self, organism, HP_delta, HP_delta_duration):
+		if organism not in self._delayed_HP_deltas:
+			self._delayed_HP_deltas[organism] = (HP_delta, HP_delta_duration)
+		else:
+			self._delayed_HP_deltas[organism][1] += HP_delta_duration

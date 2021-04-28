@@ -110,13 +110,13 @@ class Game:
 	def _process_ability(self, organism):
 		# Changing HP
 		if organism.ability.HP_delta:
-			# Changing the order of the delta to align it with the intended recipients
-			HP_delta = organism.ability.HP_delta
-			if not self._curr_player.is_first_organism(organism):
-				HP_delta = [delta[::-1] for delta in HP_delta]
-				
-			self._curr_player.change_HP(HP_delta[0])
-			self._next_player.change_HP(HP_delta[1])
+			# Checking for delayed HP Delta
+			if organism.ability.HP_delta_duration:
+				self._curr_player.add_delayed_HP_delta(organism, organism.ability.HP_delta[0], organism.ability.HP_delta_duration)
+				self._next_player.add_delayed_HP_delta(organism, organism.ability.HP_delta[1], organism.ability.HP_delta_duration)
+			else:
+				self._curr_player.change_HP(organism.ability.HP_delta[0])
+				self._next_player.change_HP(organism.ability.HP_delta[1])
 			
 		# Matching tiles in a specific shape
 		if organism.ability.tile_match_shape:
@@ -127,7 +127,7 @@ class Game:
 			# Changing the order of the delta to align it with the intended recipients
 			mana_delta = organism.ability.HP_delta
 			if not self._curr_player.is_first_organism(organism):
-				mana_delta = [delta[::-1] for delta in mana_delta]
+				mana_delta = [mana_delta[1], mana_delta[0], mana_delta[3], mana_delta[2]]
 
 			self._curr_player.change_HP(mana_delta[0])
 			self._next_player.change_HP(mana_delta[1])
@@ -152,3 +152,5 @@ class Game:
 		# Increasing move count on next turn
 		if organism.ability.increase_move_count:
 			self._curr_player.give_extra_move(False)
+
+		organism.num_mana = 0

@@ -89,16 +89,15 @@ class Grid:
 					self._grid[y, x] = -1
 
 	def _shift_tiles_down(self):
-		for y in range(self._grid.shape[0]):
-			for x in range(self._grid.shape[1]):
-				# If the current tile is matched, pull down the closest unmatched tile above
-				if self._grid[y, x] == -1:
-					temp_y = y - 1
-					while temp_y >= 0 and self._grid[temp_y, x] == -1:
-						temp_y -= 1
-					if temp_y >= 0:
-						self._grid[y, x] = self._grid[temp_y, x]
-						self._grid[temp_y, x] = -1
+		tile_shifted = True
+		while tile_shifted:
+			tile_shifted = False
+			for y in range(1, self._grid.shape[0]):
+				for x in range(self._grid.shape[1]):
+					# If the current tile is matched and the tile above isn't, swap them
+					if self._grid[y, x] == -1 and self._grid[y-1, x] != -1 :
+						self._grid[y,x], self._grid[y-1,x] = self._grid[y-1,x], self._grid[y,x]
+						tile_shifted = True
 
 	def _fill_matched_tiles(self):
 		for y in range(self._grid.shape[0]):
@@ -142,7 +141,7 @@ class Grid:
 		self._match_grid()
 
 	def convert_tiles(self, tile_type, num_tiles):
-		for i in range(len(num_tiles)):
+		for i in range(num_tiles):
 			# Pick a random tile and check that the type is different to the desired type
 			while True:
 				seed_y = np.random.randint(self._grid.shape[0])
