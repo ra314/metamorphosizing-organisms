@@ -4,7 +4,7 @@ class Organism:
 		self.ability = ability
 		self.mana_type_index = mana_type_index
 		self.mana_type = mana_types[mana_type_index]
-		self._num_mana = 0
+		self.num_mana = 0
 		self.evolution = evolution
 		self._game = None
 
@@ -12,7 +12,7 @@ class Organism:
 		return self.name
 
 	def draw(self):
-		mana_str = ('+' * self._num_mana) + ('-' * (self.ability.num_mana_to_activate - self._num_mana))
+		mana_str = ('+' * self.num_mana) + ('-' * (self.ability.num_mana_to_activate - self.num_mana))
 		return f"{self.name} ({self.mana_type_index}): {mana_str}"
 
 	def evolve(self):
@@ -23,13 +23,13 @@ class Organism:
 
 	def change_num_mana(self, delta):
 		# Clamping mana
-		prev_mana = self._num_mana
-		self._num_mana = min(max(0, delta+self._num_mana), self.ability.num_mana_to_activate)
+		prev_mana = self.num_mana
+		self.num_mana = min(max(0, delta + self.num_mana), self.ability.num_mana_to_activate)
 		# Checking for activated abilities
-		if self._num_mana >= self.ability.num_mana_to_activate:
+		if self.num_mana >= self.ability.num_mana_to_activate:
 			self._game.activated_organisms.add(self)
 		# Returning the amount of unused mana
-		return abs(self._num_mana - prev_mana)
+		return abs(self.num_mana - prev_mana)
 
 	def add_game_reference_to_objects(self, game):
 		self._game = game
