@@ -54,3 +54,43 @@ stage_2_organisms['Karaggon'] = Organism('Karaggon', abilities['Heal_Leaf_plus']
                                          mana_indexes['grass'], None)
 stage_1_organisms['Turtleisk'] = Organism('Turtleisk', abilities['Heal_Leaf'],
                                           mana_indexes['grass'], stage_2_organisms['Karaggon'])
+																					
+stage_2_organisms['Axelraze'] = Organism('Axelraze', abilities['Electroclaw_plus'],
+                                         mana_indexes['electric'], None)
+stage_1_organisms['Slickitty'] = Organism('Slickitty', abilities['Electroclaw'],
+                                          mana_indexes['electric'], stage_2_organisms['Axelraze'])
+
+stage_2_organisms['Scoprikon'] = Organism('Scoprikon', abilities['Psycho_Bite_plus'],
+                                         mana_indexes['psychic'], None)
+stage_1_organisms['Barbenin'] = Organism('Barbenin', abilities['Psycho_Bite'],
+                                          mana_indexes['psychic'], stage_2_organisms['Scoprikon'])
+																						
+stage_2_organisms['Magnooki'] = Organism('Magnooki', abilities['Pyro_Blitz_plus'],
+                                         mana_indexes['fire'], None)
+stage_1_organisms['Pyrokun'] = Organism('Pyrokun', abilities['Pyro_Blitz'],
+                                          mana_indexes['fire'], stage_2_organisms['Magnooki'])
+																						
+stage_2_organisms['Shardivore'] = Organism('Shardivore', abilities['Aqua_Blast_plus'],
+                                         mana_indexes['water'], None)
+stage_1_organisms['Trashark'] = Organism('Trashark', abilities['Aqua_Blast'],
+                                          mana_indexes['water'], stage_2_organisms['Trashark'])
+
+stage_2_organisms['Eidelf'] = Organism('Eidelf', abilities['Flower_Dance_plus'],
+                                         mana_indexes['grass'], None)
+stage_1_organisms['Elfini'] = Organism('Elfini', abilities['Flower_Dance'],
+                                          mana_indexes['grass'], stage_2_organisms['Eidelf'])
+																					
+stage_2_organisms['Gleamur'] = Organism('Gleamur', abilities['Starblitz_plus'],
+                                         mana_indexes['electric'], None)
+stage_1_organisms['Winklit'] = Organism('Winklit', abilities['Starblitz'],
+                                          mana_indexes['electric'], stage_2_organisms['Gleamur'])
+																						
+stage_2_organisms['Flambagant'] = Organism('Flambagant', abilities['Hugs_plus'],
+                                         mana_indexes['fire'], None)
+stage_1_organisms['Timingo'] = Organism('Timingo', abilities['Hugs'],
+                                          mana_indexes['fire'], stage_2_organisms['Flambagant'])
+																						
+stage_2_organisms['Bandicrook'] = Organism('Bandicrook', abilities['Pickpocket_plus'],
+                                         mana_indexes['psychic'], None)
+stage_1_organisms['Criminook'] = Organism('Criminook', abilities['Pickpocket'],
+                                          mana_indexes['psychic'], stage_2_organisms['Bandicrook'])
