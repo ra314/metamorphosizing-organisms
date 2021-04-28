@@ -163,3 +163,7 @@ class Game:
 			# Steal mana from the intended target
 			mana_stolen = self._next_player.steal_mana(organism.ability.mana_to_steal)
 			organism.change_num_mana(mana_stolen)
+
+		# Increasing move count on next turn
+		if organism.ability.increase_move_count:
+			self._curr_player.give_extra_move(False)
