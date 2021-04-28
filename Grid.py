@@ -42,8 +42,8 @@ class Grid:
 			self._find_and_remove_matched_tiles()
 			self._game.draw()
 
-			self._initialize_matches_per_type()
 			self._game.add_mana(self._matches_per_type)
+			self._initialize_matches_per_type()
 
 			self._shift_tiles_down()
 			self._game.draw()

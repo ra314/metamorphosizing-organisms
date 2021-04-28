@@ -20,7 +20,7 @@ class Player:
 		berries_str = ('+' * self._num_berries) + ('-' * (self.berries_to_evolve - self._num_berries))
 		return f"{self._name} \n" \
 			f"HP: {HP_str} \n" \
-			f"Berries: {berries_str} \n" \
+			f"Berries (0): {berries_str} \n" \
 			f"{self._organisms[0].draw()} \n" \
 			f"{self._organisms[1].draw()}"
 
@@ -45,7 +45,7 @@ class Player:
 
 	def change_num_berries(self, delta):
 		# Clamping berries
-		self._num_berries = min(max(0, delta+self.curr_HP), self.berries_to_evolve)
+		self._num_berries = min(max(0, delta+self._num_berries), self.berries_to_evolve)
 		self._game.draw()
 
 	def evolve_organism(self, organism_index):
@@ -60,6 +60,7 @@ class Player:
 		self.moves = self.moves_per_turn
 		
 	def add_mana(self, matches_per_type):
+		print(matches_per_type)
 		# Collecting berries
 		self.change_num_berries(matches_per_type[0])
 		# Distributing mana
