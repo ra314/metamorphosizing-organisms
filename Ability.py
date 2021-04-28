@@ -1,6 +1,6 @@
 class Ability:
 	def __init__(self, description, HP_delta, tile_match_shape, num_tiles_to_convert, increase_move_count,
-				 num_berries_delta, resource_delta, num_mana_to_activate):
+				 berries_to_steal, mana_to_steal, mana_delta, num_mana_to_activate):
 		# str
 		self.description = description
 
@@ -16,14 +16,14 @@ class Ability:
 
 		self.increase_move_count = increase_move_count
 
-		self.berries_to_steal = num_berries_to_steal
+		self.berries_to_steal = berries_to_steal
 		
-		self.mana_to_steal = num_mana_to_steal
+		self.mana_to_steal = mana_to_steal
 
-		self.mana_delta = num_mana_delta
+		self.mana_delta = mana_delta
 		"tuple of len 4." \
-		"(amount to increase casting organism's mana, amount to increase ally organism's mana," \
-		"amount to increase opponent's organism's mana (adjacent to organism), amount to increase opponent's organism's mana (adjacent to organism)"
+		"(amount to increase casting organism's mana, amount to increase allied organism's mana," \
+		"amount to increase organism's mana (opposite to casting organism), amount to increase opponent's allied organism's mana (adjacent to the opposite casting organism)"
 
 		self.num_mana_to_activate = num_mana_to_activate
 		"amount of mana needed to activate ability"
