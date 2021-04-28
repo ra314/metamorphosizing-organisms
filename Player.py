@@ -11,6 +11,8 @@ class Player:
 		self.curr_HP = self.max_HP
 		self.moves = 0
 		self._game = None
+		self._extra_move = False
+		self._extra_move_on_next_turn = False
 
 	def __str__(self):
 		return self._name
@@ -58,6 +60,10 @@ class Player:
 		
 	def reset_moves(self):
 		self.moves = self.moves_per_turn
+		if self.extra_move_on_next_turn:
+			self.moves += 1
+			self._extra_move_on_next_turn = False
+			self._extra_move = True
 		
 	def add_mana(self, matches_per_type):
 		print(matches_per_type)
@@ -83,3 +89,11 @@ class Player:
 		mana_to_steal = min(selected_organism.num_mana, mana_to_steal)
 		selected_organism.change_num_mana(-mana_to_steal)
 		return mana_to_steal
+
+	def give_extra_move(self, now):
+		if now:
+			if not self._extra_move:
+				self._extra_move = True
+				self.moves += 1
+		else:
+			self._extra_move_on_next_turn = True
