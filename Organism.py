@@ -73,7 +73,7 @@ stage_1_organisms['Pyrokun'] = Organism('Pyrokun', abilities['Pyro_Blitz'],
 stage_2_organisms['Shardivore'] = Organism('Shardivore', abilities['Aqua_Blast_plus'],
                                          mana_indexes['water'], None)
 stage_1_organisms['Trashark'] = Organism('Trashark', abilities['Aqua_Blast'],
-                                          mana_indexes['water'], stage_2_organisms['Trashark'])
+                                          mana_indexes['water'], stage_2_organisms['Shardivore'])
 
 stage_2_organisms['Eidelf'] = Organism('Eidelf', abilities['Flower_Dance_plus'],
                                          mana_indexes['grass'], None)
