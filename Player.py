@@ -44,7 +44,8 @@ class Player:
 
 	def change_HP(self, delta):
 		# Clamping HP
-		self.curr_HP = min(max(0, delta+self.curr_HP), self.max_HP)
+		# The max of current and max hp is done in the case of the start where p2 has 5 extra HP
+		self.curr_HP = min(max(0, delta+self.curr_HP), max(self.curr_HP, self.max_HP))
 		self._game.draw()
 
 	def change_num_berries(self, delta):

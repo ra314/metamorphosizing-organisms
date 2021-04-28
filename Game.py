@@ -108,6 +108,8 @@ class Game:
 		self._grid.swap(x1, y1, x2, y2)
 		
 	def _process_ability(self, organism):
+		organism.num_mana = 0
+		
 		# Changing HP
 		if organism.ability.HP_delta:
 			# Checking for delayed HP Delta
@@ -154,4 +156,3 @@ class Game:
 			self._curr_player.give_extra_move(False)
 
 		self.draw()
-		organism.num_mana = 0

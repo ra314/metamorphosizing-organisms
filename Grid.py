@@ -120,6 +120,7 @@ class Grid:
 		return y + tile_match_shape[0] < self._grid.shape[0] and x + tile_match_shape[1] < self._grid.shape[1]
 
 	def force_grid_match(self, tile_match_shape):
+		tile_match_shape = list(tile_match_shape)
 		# Replace -1s with height and width of grid
 		if tile_match_shape[0] == -1:
 			tile_match_shape[0] = self._grid.shape[0]
@@ -136,7 +137,18 @@ class Grid:
 		# Mark those tiles as matched
 		for y in range(seed_y, seed_y + tile_match_shape[0]):
 			for x in range(seed_x, seed_x + tile_match_shape[1]):
+				self._matches_per_type[self._grid[y, x]] += 1
 				self._grid[y, x] = -1
+
+		# Clearing the force matched grid and checking for more
+		self._game.add_mana(self._matches_per_type)
+		self._initialize_matches_per_type()
+
+		self._shift_tiles_down()
+		self._game.draw()
+
+		self._fill_matched_tiles()
+		self._game.draw()
 
 		self._match_grid()
 
