@@ -131,4 +131,7 @@ class Game:
 
 			self._curr_player.change_HP(mana_delta[0])
 			self._next_player.change_HP(mana_delta[1])
-			
+
+		# Converting tiles
+		if organism.ability.num_tiles_to_convert:
+			self._grid.convert_tiles(organism.mana_type_index, organism.ability.num_tiles_to_convert)
