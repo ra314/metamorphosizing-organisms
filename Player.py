@@ -6,7 +6,7 @@ class Player:
 
 	def __init__(self, organism1, organism2, name):
 		self._organisms = (organism1, organism2)
-		self._num_berries = None
+		self._num_berries = 0
 		self._name = name
 		self.curr_HP = self.max_HP
 		self.moves = 0
@@ -17,8 +17,10 @@ class Player:
 
 	def draw(self):
 		HP_str = ('+' * int(self.curr_HP/5)) + ('-' * int((self.max_HP - self.curr_HP)/5))
+		berries_str = ('+' * self._num_berries) + ('-' * (self.berries_to_evolve - self._num_berries))
 		return f"{self._name} \n" \
 			f"HP: {HP_str} \n" \
+			f"Berries: {berries_str} \n" \
 			f"{self._organisms[0].draw()} \n" \
 			f"{self._organisms[1].draw()}"
 
