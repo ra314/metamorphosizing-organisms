@@ -110,7 +110,7 @@ class Game:
 	def _process_ability(self, organism):
 		# Changing HP
 		if organism.ability.HP_delta:
-			# Changing the order of the delta to align it with the inteded recipients
+			# Changing the order of the delta to align it with the intended recipients
 			HP_delta = organism.ability.HP_delta
 			if not self._curr_player.is_first_organism(organism):
 				HP_delta = [delta[::-1] for delta in HP_delta]
@@ -124,7 +124,7 @@ class Game:
 
 		# Changing Mana
 		if organism.ability.mana_delta:
-			# Changing the order of the delta to align it with the inteded recipients
+			# Changing the order of the delta to align it with the intended recipients
 			mana_delta = organism.ability.HP_delta
 			if not self._curr_player.is_first_organism(organism):
 				mana_delta = [delta[::-1] for delta in mana_delta]
@@ -132,13 +132,19 @@ class Game:
 			self._curr_player.change_HP(mana_delta[0])
 			self._next_player.change_HP(mana_delta[1])
 
-    # Converting tiles
-      if organism.ability.num_tiles_to_convert:
-        self._grid.convert_tiles(organism.mana_type_index, organism.ability.num_tiles_to_convert)
+		# Converting tiles
+		  if organism.ability.num_tiles_to_convert:
+			self._grid.convert_tiles(organism.mana_type_index, organism.ability.num_tiles_to_convert)
 		
 		# Changing Berries
 		if organism.ability.berries_to_steal:
-			num_berries = min(organism.ability.berries_to_steal, self._next_player.berries)
-			# Steal the berries from the intented target
-			self._curr_player.change_num_berries(num_berries))
-			self._next_player.change_num_berries(-num_berries)
+			berries_to_steal = min(organism.ability.berries_to_steal, self._next_player.berries)
+			# Steal the berries from the intended target
+			self._curr_player.change_num_berries(berries_to_steal)
+			self._next_player.change_num_berries(-berries_to_steal)
+
+		# Stealing mana
+		if organism.ability.mana_to_steal:
+			# Steal mana from the intended target
+			mana_stolen = self._next_player.steal_mana(organism.ability.mana_to_steal)
+			organism.change_num_mana(mana_stolen)

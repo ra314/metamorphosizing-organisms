@@ -76,3 +76,10 @@ class Player:
 			
 	def is_first_organism(self, organism):
 		return self._organisms[0] == organism
+
+	# Steal mana from the organism with the most and return the amount of mana stolen
+	def steal_mana(self, mana_to_steal):
+		selected_organism = max(self._organisms, key=lambda organism: organism.num_mana)
+		mana_to_steal = min(selected_organism.num_mana, mana_to_steal)
+		selected_organism.change_num_mana(-mana_to_steal)
+		return mana_to_steal
