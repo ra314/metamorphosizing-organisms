@@ -110,8 +110,14 @@ class Game:
 	def _process_ability(self, organism):
 		# Changing HP
 		if organism.ability.HP_delta:
-			self._curr_player.change_HP(organism.ability.HP_delta[0])
-			self._next_player.change_HP(organism.ability.HP_delta[1])
+			# Changing the order of the delta to align it with the inteded recipients
+			HP_delta = organism.ability.HP_delta
+			if not self._curr_player.is_first_organism(organism):
+				HP_delta = [delta[::-1] for delta in HP_delta]
+				
+			self._curr_player.change_HP(HP_delta[0])
+			self._next_player.change_HP(HP_delta[1])
+			
 		# Matching tiles in a specific shape
 		if organism.ability.tile_match_shape:
 			self._grid.force_grid_match(organism.ability.tile_match_shape)

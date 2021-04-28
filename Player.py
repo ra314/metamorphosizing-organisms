@@ -73,3 +73,6 @@ class Player:
 		self._game = game
 		for organism in self._organisms:
 			organism.add_game_reference_to_objects(game)
+			
+	def is_first_organism(self, organism):
+		return self._organisms[0] == organism
