@@ -131,4 +131,11 @@ class Game:
 
 			self._curr_player.change_HP(mana_delta[0])
 			self._next_player.change_HP(mana_delta[1])
+		
+		# Changing Berries
+		if organism.ability.berries_to_steal:
+			num_berry = min(organism.ability.berries_to_steal, self._next_player.berries)
+			# Steal the berries from the intented target
+			self._curr_player.change_num_berries(num_berry))
+			self._next_player.change_num_berries(-num_berry)
 			
