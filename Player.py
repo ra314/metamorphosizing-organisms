@@ -24,6 +24,7 @@ class Player:
 		return f"{self._name} \n" \
 			f"HP: {HP_str} \n" \
 			f"Berries (0): {berries_str} \n" \
+			f"Moves Left: {self.moves} \n" \
 			f"{self._organisms[0].draw()} \n" \
 			f"{self._organisms[1].draw()}"
 

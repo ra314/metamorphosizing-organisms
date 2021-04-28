@@ -153,4 +153,5 @@ class Game:
 		if organism.ability.increase_move_count:
 			self._curr_player.give_extra_move(False)
 
+		self.draw()
 		organism.num_mana = 0
