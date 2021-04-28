@@ -27,7 +27,6 @@ class Game:
 		self._add_game_reference_to_objects()
 		self._randomise_arena()
 		self._select_first_player()
-		self.draw()
 
 	def _add_game_reference_to_objects(self):
 		for player in self._players:
