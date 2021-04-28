@@ -7,6 +7,9 @@ class Ability:
 		self.HP_delta = HP_delta
 		"tuple of len 2. " \
 		"(amount to increase player's HP, amount to increase opponent's HP)"
+		
+		self.HP_delta_delay = HP_delta_delay
+		"The delay before the heal occurs"
 
 		self.tile_match_shape = tile_match_shape
 		"tuple of len 3. " \

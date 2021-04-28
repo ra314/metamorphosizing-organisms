@@ -6,6 +6,11 @@ from Grid import Grid
 class Game:
 	# Height and width
 	grid_size = (5, 7)
+	
+	# A list of lists with the current ability delay and the ability in question
+	# each inner list is formatted like so...
+	# (turns until activation, player to heal, amount to heal)
+	delayed_heals = []
 
 	def __init__(self, player1, player2):
 		self._players = (player1, player2)
@@ -103,6 +108,13 @@ class Game:
 		if self._curr_player.moves == 0:
 			self._next_player.reset_moves()
 			self._curr_player, self._next_player = self._next_player, self._curr_player
+			
+			# Checking delayed heals and decrement the turns until activation
+			for delayed_heal in delayed_heals:
+				delayed_heal[0] -= 1
+				#When turns to activate is 0, heal the current player
+				if not ability[0]:
+					ability[1].change_HP(ability[2])
 
 	def _swap_tiles_in_grid(self, x1, y1, x2, y2):
 		self._grid.swap(x1, y1, x2, y2)
@@ -114,8 +126,11 @@ class Game:
 			HP_delta = organism.ability.HP_delta
 			if not self._curr_player.is_first_organism(organism):
 				HP_delta = [delta[::-1] for delta in HP_delta]
-				
-			self._curr_player.change_HP(HP_delta[0])
+			
+			# Check if the ability has a delayed healing effect
+			if (organism.ability.HP_delta_delay) 
+				delayed_heals[len(delayed_heals)] = [organism.ability.HP_delta_delay, self._curr_player, HP_delta[0]]
+			else self._curr_player.change_HP(HP_delta[0])
 			self._next_player.change_HP(HP_delta[1])
 			
 		# Matching tiles in a specific shape
