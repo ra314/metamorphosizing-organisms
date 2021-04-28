@@ -5,7 +5,7 @@ class Ability:
 		self.description = description
 
 		self.HP_delta = HP_delta
-		"tuple of len 3. " \
+		"tuple of len 2. " \
 		"(amount to increase player's HP, amount to increase opponent's HP)"
 
 		self.tile_match_shape = tile_match_shape
