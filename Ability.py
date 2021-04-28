@@ -32,35 +32,36 @@ class Ability:
 	def __str__(self):
 		return self.description
 
+
 abilities = {}
 abilities['Flare_plus'] = \
 	Ability('Flare+: Attacks for 25 HP and matches 2 random columns.',
-			(0, -25), (-1, 1, 2), 0, False, None, None, 8)
+	        (0, -25), (-1, 1, 2), 0, False, None, None, 8)
 abilities['Flare'] = \
 	Ability('Flare: Attacks for 20 HP and matches a random column.',
-			(0, -20), (-1, 1, 1), 0, False, None, None, 8)
+	        (0, -20), (-1, 1, 1), 0, False, None, None, 8)
 
 abilities['Hydro_Rush_plus'] = \
 	Ability('Hydro Rush+: Attacks for 20 HP and converts 3 random tiles to Water.',
-			(0, -20), None, 3, False, None, None, 6)
+	        (0, -20), None, 3, False, None, None, 6)
 abilities['Hydro_Rush'] = \
 	Ability('Hydro Rush: Attacks for 10 HP and converts 2 random tiles to Water.',
-			(0, -10), None, 2, False, None, None, 6)
+	        (0, -10), None, 2, False, None, None, 6)
 
 abilities['Heal_Leaf_plus'] = \
 	Ability('Heal Leaf+: Attacks for 15HP and heals you for 15HP.',
-			(15, -15), None, 0, False, None, None, 6)
+	        (15, -15), None, 0, False, None, None, 6)
 abilities['Heal_Leaf'] = \
 	Ability('Heal Leaf: Attacks for 10HP and heals you for 10HP.',
-			(10, -10), None, 0, False, None, None, 6)
-			
+	        (10, -10), None, 0, False, None, None, 6)
+
 abilities['Electroclaw_plus'] = \
 	Ability('Electroclaw+: Attacks for 10 HP and matches a random 3x2 grid.',
-			(0, -10), (2, 3, 1), 0, False, None, None, 4)
+	        (0, -10), (2, 3, 1), 0, False, None, None, 4)
 abilities['Electroclaw'] = \
 	Ability('Electroclaw: Attacks for 5 HP and matches a random 2x2 grid.',
-			(0, -5), (2, 2, 1), 0, False, None, None, 4)
-			
+	        (0, -5), (2, 2, 1), 0, False, None, None, 4)
+
 abilities['Psycho_Bite_plus'] = \
 	Ability('Psycho Bite+: Attacks for 15 HP and drains 3 Mana from opponent"s monsters.',
 			(0, -15), None, 0, False, None, (3, "mana", "drain", "enemy", 0, True), 6)
@@ -70,18 +71,18 @@ abilities['Psycho_Bite'] = \
 
 abilities['Pyro_Blitz_plus'] = \
 	Ability('Pyro Blitz+: Attacks for 35 HP and matches a random row.',
-			(0, -35), None, 0, False, None, None, 10)
+	        (0, -35), None, 0, False, None, None, 10)
 abilities['Pyro_Blitz'] = \
 	Ability('Pyro Blitz: Attacks for 25 HP and matches a random row.',
-			(0, -25), None, 0, False, None, None, 10)
-			
+	        (0, -25), None, 0, False, None, None, 10)
+
 abilities['Aqua_Blast_plus'] = \
 	Ability('Aqua Blast+: Attacks for 25 HP and converts 3 random tiles to Water.',
-			(0, -35), None, 3, False, None, None, 10)
+	        (0, -35), None, 3, False, None, None, 10)
 abilities['Aqua_Blast'] = \
 	Ability('Aqua Blast: Attacks for 20 HP and converts 2 random tiles to Water.',
-			(0, -25), None, 2, False, None, None, 10)
-			
+	        (0, -25), None, 2, False, None, None, 10)
+
 abilities['Flower_Dance_plus'] = \
 	Ability('Flower Dance+: Attacks for 5 HP and heals 10 HP at the end of turn for two turns.',
 			(0, -10), None, 0, False, None, (10, "health", "give", "self", 2, False), 6)
@@ -91,10 +92,10 @@ abilities['Flower_Dance'] = \
 			
 abilities['Starblitz_plus'] = \
 	Ability('Starblitz+: Attacks for 15 HP and grants 1 extra move in the next turn.',
-			(0, -15), None, 0, True, None, None, 6)
+	        (0, -15), None, 0, True, None, None, 6)
 abilities['Starblitz'] = \
 	Ability('Starblitz: Attacks for 10 HP and grants 1 extra move in the next turn.',
-			(0, -10), None, 0, True, None, None, 6)
+	        (0, -10), None, 0, True, None, None, 6)
 
 abilities['Hugs_plus'] = \
 	Ability('Hugs+: Attacks for 15 HP and gives 3 mana to your other monster.',

@@ -40,16 +40,16 @@ class Grid:
 		while self._find_matches_in_grid():
 			self._initialize_matches_per_type()
 			self._find_and_remove_matched_tiles()
-			self.game.draw()
+			self._game.draw()
 
 			self._initialize_matches_per_type()
-			self.game.add_mana(self._matches_per_type)
+			self._game.add_mana(self._matches_per_type)
 
 			self._shift_tiles_down()
-			self.game.draw()
+			self._game.draw()
 
 			self._fill_matched_tiles()
-			self.game.draw()
+			self._game.draw()
 
 	def _find_matches_in_grid(self):
 		self._matches = np.zeros(self._grid.shape)
@@ -75,6 +75,9 @@ class Grid:
 		for y in range(self._grid.shape[0]):
 			for x in range(self._grid.shape[1]):
 				match_tile(y, x)
+
+		# Returns if there are any matches or not
+		return np.sum(self._matches) > 0
 
 	def _find_and_remove_matched_tiles(self):
 		for y in range(self._grid.shape[0]):
@@ -103,9 +106,9 @@ class Grid:
 				# If the tile is matched, generate a random one
 				if self._grid[y, x] == -1:
 					self._grid[y, x] = np.random.randint(0, len(mana_indexes))
-					
+
 	def swap(self, x1, y1, x2, y2):
-		self._grid[y1,x1], self._grid[y2,x2] = self._grid[y2,x2], self._grid[y1,x1]
+		self._grid[y1, x1], self._grid[y2, x2] = self._grid[y2, x2], self._grid[y1, x1]
 		self._game.draw()
 		self._match_grid()
 
@@ -128,12 +131,12 @@ class Grid:
 		while True:
 			seed_y = np.random.randint(self._grid.shape[0])
 			seed_x = np.random.randint(self._grid.shape[1])
-			if self._shape_in_grid(self, tile_match_shape, seed_y, seed_x):
+			if self._shape_in_grid(tile_match_shape, seed_y, seed_x):
 				break
 
 		# Mark those tiles as matched
-		for y in range(seed_y, seed_y+tile_match_shape[0]):
-			for x in range(seed_x, seed_x+tile_match_shape[1]):
+		for y in range(seed_y, seed_y + tile_match_shape[0]):
+			for x in range(seed_x, seed_x + tile_match_shape[1]):
 				self._grid[y, x] = -1
 
 		self._match_grid()
