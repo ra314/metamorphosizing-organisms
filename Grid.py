@@ -140,3 +140,13 @@ class Grid:
 				self._grid[y, x] = -1
 
 		self._match_grid()
+
+	def convert_tiles(self, tile_type, num_tiles):
+		for i in range(len(num_tiles)):
+			# Pick a random tile and check that the type is different to the desired type
+			while True:
+				seed_y = np.random.randint(self._grid.shape[0])
+				seed_x = np.random.randint(self._grid.shape[1])
+				if self._grid[seed_y, seed_x] != tile_type:
+					self._grid[seed_y, seed_x] = tile_type
+					break
