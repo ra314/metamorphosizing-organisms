@@ -1,11 +1,11 @@
 class Ability:
 	def __init__(self, description, HP_delta, tile_match_shape, num_tiles_to_convert, increase_move_count,
-				 num_berries_delta, num_mana_delta, num_mana_to_activate):
+				 num_berries_delta, resource_delta, num_mana_to_activate):
 		# str
 		self.description = description
 
 		self.HP_delta = HP_delta
-		"tuple of len 2. " \
+		"tuple of len 3. " \
 		"(amount to increase player's HP, amount to increase opponent's HP)"
 
 		self.tile_match_shape = tile_match_shape
@@ -20,10 +20,11 @@ class Ability:
 		"tuple of len 2. " \
 		"(amount to increase player's berries, amount to increase opponent's berries)"
 
-		self.mana_delta = num_mana_delta
-		"tuple of len 4." \
-		"(amount to increase player's 1st organism's mana, amount to increase player's 2nd organism's mana," \
-		"amount to increase opponent's 1st organism's mana, amount to increase opponent's 2nd organism's mana)"
+		self.resource_delta = resource_delta
+		"tuple of len 5." \
+		"(amount), (type | [mana, health]), (request | [give, steal, drain]), (target | [self, ally, enemy]), (delay), (all | [True, False])" \
+		#"(amount to increase player's 1st organism's mana, amount to increase player's 2nd organism's mana," \
+		#"amount to increase opponent's 1st organism's mana, amount to increase opponent's 2nd organism's mana)"
 
 		self.num_mana_to_activate = num_mana_to_activate
 		"amount of mana needed to activate ability"
@@ -62,10 +63,10 @@ abilities['Electroclaw'] = \
 			
 abilities['Psycho_Bite_plus'] = \
 	Ability('Psycho Bite+: Attacks for 15 HP and drains 3 Mana from opponent"s monsters.',
-			(0, -15), None, 0, False, None, (0, 0, -3, -3), 6)
+			(0, -15), None, 0, False, None, (3, "mana", "drain", "enemy", 0, True), 6)
 abilities['Psycho_Bite'] = \
 	Ability('Psycho Bite: Attacks for 10 HP and drains 2 Mana from opponent"s monsters.',
-			(0, -10), None, 0, False, None, (0, 0, -3, -3) 6)
+			(0, -10), None, 0, False, None, (2, "mana", "drain", "enemy", 0, True), 6)
 
 abilities['Pyro_Blitz_plus'] = \
 	Ability('Pyro Blitz+: Attacks for 35 HP and matches a random row.',
@@ -83,10 +84,10 @@ abilities['Aqua_Blast'] = \
 			
 abilities['Flower_Dance_plus'] = \
 	Ability('Flower Dance+: Attacks for 5 HP and heals 10 HP at the end of turn for two turns.',
-			(0, -10), None, 0, False, None, None, 6)
+			(0, -10), None, 0, False, None, (10, "health", "give", "self", 2, False), 6)
 abilities['Flower_Dance'] = \
 	Ability('Flower Dance: Attacks for 5 HP and heals 5 HP at the end of turn for two turns.',
-			(0, -5), None, 0, False, None, None, 6)
+			(0, -5), None, 0, False, None, (5, "health", "give", "self", 2, False), 6)
 			
 abilities['Starblitz_plus'] = \
 	Ability('Starblitz+: Attacks for 15 HP and grants 1 extra move in the next turn.',
@@ -97,14 +98,14 @@ abilities['Starblitz'] = \
 
 abilities['Hugs_plus'] = \
 	Ability('Hugs+: Attacks for 15 HP and gives 3 mana to your other monster.',
-			(0, -15), None, 0, False, None, (3, 3, 0, 0), 6)
+			(0, -15), None, 0, False, None, (3, "mana", "give", "ally", 0, False), 6)
 abilities['Hugs'] = \
 	Ability('Hugs: Attacks for 10 HP and gives 2 mana to your other monster.',
-			(0, -10), None, 0, False, None, (2, 2, 0, 0), 6)
+			(0, -10), None, 0, False, None, (2, "mana", "give", "ally", 0, False), 6)
 			
 abilities['Pickpocket_plus'] = \
-	Ability('Pickpocket+: Attacks for 10 HP and steals up to 2 berries and 1 mana.',
-			(0, -10), None, 0, False, (2, -2), (1, 0, -1, 0), 6)
+	Ability('Pickpocket+: Attacks for 10 HP and steals up to 3 berries and 2 mana.',
+			(0, -10), None, 0, False, (3, -3), (2, "mana", "steal", "enemy", 0, False), 6)
 abilities['Pickpocket'] = \
-	Ability('Pickpocket: Attacks for 10 HP and steals up to 3 berries and 2 mana.',
-			(0, -10), None, 0, False, (3, -3), (2, 0, -2, 0), 6)
+	Ability('Pickpocket: Attacks for 10 HP and steals up to 2 berries and 1 mana.',
+			(0, -10), None, 0, False, (2, -2), (1, "mana", "steal", "enemy", 0, False), 6)
