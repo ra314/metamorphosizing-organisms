@@ -65,10 +65,10 @@ abilities['Electroclaw'] = \
             (0, -5), 0, (2, 2, 1), 0, False, 0, 0, None, 4)
 
 abilities['Psycho_Bite_plus'] = \
-    Ability('Psycho Bite+: Attacks for 15 HP and drains 3 Mana from opponent"s monsters.',
+    Ability("Psycho Bite+: Attacks for 15 HP and drains 3 Mana from opponent's monsters.",
             (0, -15), 0, None, 0, False, 0, 0, (0, 0, -3, -3), 6)
 abilities['Psycho_Bite'] = \
-    Ability('Psycho Bite: Attacks for 10 HP and drains 2 Mana from opponent"s monsters.',
+    Ability("Psycho Bite: Attacks for 10 HP and drains 2 Mana from opponent's monsters.",
             (0, -10), 0, None, 0, False, 0, 0, (0, 0, -2, -2), 6)
 
 abilities['Pyro_Blitz_plus'] = \
