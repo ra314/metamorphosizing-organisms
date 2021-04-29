@@ -6,7 +6,7 @@ class Player:
 
 	def __init__(self, organism1, organism2, name):
 		self._organisms = (organism1, organism2)
-		self._num_berries = 0
+		self.num_berries = 0
 		self._name = name
 		self.curr_HP = self.max_HP
 		self.moves = self.moves_per_turn
@@ -20,7 +20,7 @@ class Player:
 
 	def draw(self):
 		HP_str = ('+' * int(self.curr_HP/5)) + ('-' * int((self.max_HP - self.curr_HP)/5))
-		berries_str = ('+' * self._num_berries) + ('-' * (self.berries_to_evolve - self._num_berries))
+		berries_str = ('+' * self.num_berries) + ('-' * (self.berries_to_evolve - self.num_berries))
 		return f"{self._name} \n" \
 			f"HP: {HP_str} \n" \
 			f"Berries (0): {berries_str} \n" \
@@ -32,7 +32,7 @@ class Player:
 		actions_str = []
 		actions = []
 		# Add evolution and boost actions where appropriate if the player has enough berries
-		if self._num_berries == self.berries_to_evolve:
+		if self.num_berries == self.berries_to_evolve:
 			for index, organism in enumerate(self._organisms):
 				if organism.evolution:
 					actions_str.append(f"Evolve {organism.name}")
@@ -50,18 +50,18 @@ class Player:
 
 	def change_num_berries(self, delta):
 		# Clamping berries
-		self._num_berries = min(max(0, delta+self._num_berries), self.berries_to_evolve)
+		self.num_berries = min(max(0, delta+self.num_berries), self.berries_to_evolve)
 		self._game.draw()
 
 	def evolve_organism(self, organism_index):
 		self.change_HP(self.HP_restored_on_evolution)
 		self._organisms[organism_index].evolve()
 		self._game.draw()
-		self._num_berries = 0
+		self.num_berries = 0
 
 	def boost_organism(self, organism_index):
-		self._organisms[organism_index].change_num_mana(self._num_berries)
-		self._num_berries = 0
+		self._organisms[organism_index].change_num_mana(self.num_berries)
+		self.num_berries = 0
 		
 	def reset_moves(self):
 		self.moves = self.moves_per_turn
