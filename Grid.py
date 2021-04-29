@@ -39,6 +39,7 @@ class Grid:
 	def _match_grid(self):
 		while self._find_matches_in_grid():
 			self._initialize_matches_per_type()
+			self._check_for_extra_move()
 			self._find_and_remove_matched_tiles()
 			self._game.draw()
 
@@ -54,7 +55,7 @@ class Grid:
 	def _find_matches_in_grid(self):
 		self._matches = np.zeros(self._grid.shape)
 
-		def match_tile(y, x):
+		def match_tile_above_and_left(y, x):
 			curr_tile = self._grid[y, x]
 
 			# Check for matches above the curr tile
@@ -74,10 +75,48 @@ class Grid:
 		# Check for matches at each tile
 		for y in range(self._grid.shape[0]):
 			for x in range(self._grid.shape[1]):
-				match_tile(y, x)
+				match_tile_above_and_left(y, x)
 
 		# Returns if there are any matches or not
 		return np.sum(self._matches) > 0
+
+	def _check_for_extra_move(self):
+		# Create a grid where the matched tiles retain their number and everything else is -1
+		grid_with_only_matches = np.zeros(self._grid.shape) - 1
+		for y in range(self._grid.shape[0]):
+			for x in range(self._grid.shape[1]):
+				if self._matches[y, x]:
+					grid_with_only_matches[y, x] = self._grid[y, x]
+
+		# Go through the grid with only matches and apply flood fill to find size of contiguous matches
+		for y in range(self._grid.shape[0]):
+			for x in range(self._grid.shape[1]):
+				if grid_with_only_matches[y, x] != -1:
+					match_size = self._flood_fill(grid_with_only_matches, y, x)
+					if match_size > 3:
+						self._game.give_extra_move_now(True)
+
+	def _flood_fill(self, grid, y, x):
+		curr_tile = grid[y, x]
+		queue = []
+		match_size = 0
+
+		def add_to_queue(y, x):
+			nonlocal queue, match_size, grid
+			if 0 <= y < grid.shape[0] and 0 <= x < grid.shape[1]:
+				if grid[y, x] == curr_tile:
+					queue.append([y, x])
+					grid[y, x] = -1
+					match_size += 1
+
+		# Performing flood fill
+		while queue:
+			add_to_queue(y-1, x)
+			add_to_queue(y+1, x)
+			add_to_queue(y, x-1)
+			add_to_queue(y, x+1)
+
+		return match_size
 
 	def _find_and_remove_matched_tiles(self):
 		for y in range(self._grid.shape[0]):
@@ -140,7 +179,7 @@ class Grid:
 				self._matches_per_type[self._grid[y, x]] += 1
 				self._grid[y, x] = -1
 
-		# Clearing the force matched grid and checking for more
+		# Clearing the force matched grid and checking for more matches
 		self._game.add_mana(self._matches_per_type)
 		self._initialize_matches_per_type()
 

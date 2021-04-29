@@ -106,10 +106,13 @@ class Game:
 
 	def _swap_tiles_in_grid(self, x1, y1, x2, y2):
 		self._grid.swap(x1, y1, x2, y2)
+
+	def give_extra_move_now(self):
+		self._curr_player.give_extra_move(True)
 		
 	def _process_ability(self, organism):
 		organism.num_mana = 0
-		
+
 		# Changing HP
 		if organism.ability.HP_delta:
 			# Checking for delayed HP Delta
