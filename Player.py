@@ -12,7 +12,12 @@ class Player:
 		self.moves = self.moves_per_turn
 		self._game = None
 		self._extra_move = False
-		self._extra_move_on_next_turn = False
+		
+		#Whether this player has an extra or lost one of their moves
+		#Winklit/Nerverack's abilities affect this
+		self._move_bonus_deltas = {}
+		
+		#Eilfin's healing ability
 		self._delayed_HP_deltas = {}
 
 	def __str__(self):
@@ -67,12 +72,16 @@ class Player:
 		self.moves = self.moves_per_turn
 		self._extra_move = False
 
-		# Granting delayed extra move
-		if self._extra_move_on_next_turn:
-			self.moves += 1
-			self._extra_move_on_next_turn = False
-			self._extra_move = True
-
+		# Granting move bonuses
+		# Accounts for the Winklit + Nerverack edge-case
+		# print(self._move_bonus_deltas.values())
+		for organism in self._move_bonus_deltas.values():
+			bonus, turns_left = self._move_bonus_deltas[organism]
+			turns_left -= 1
+			self.moves += bonus
+			if not turns_left:
+				del self._move_bonus_deltas[organism]
+				
 		# Applying delayed HP_delta
 		print(self._delayed_HP_deltas.values())
 		for organism in self._delayed_HP_deltas.values():
@@ -107,19 +116,22 @@ class Player:
 		selected_organism.change_num_mana(-mana_to_steal)
 		return mana_to_steal
 
-	def give_extra_move(self, now):
-		if now:
-			if not self._extra_move:
-				self._extra_move = True
-				self.moves += 1
-		else:
-			self._extra_move_on_next_turn = True
+	def give_extra_move(self):
+		if not self._extra_move:
+			self._extra_move = True
+			self.moves += 1
 
 	def add_delayed_HP_delta(self, organism, HP_delta, HP_delta_duration):
 		if organism not in self._delayed_HP_deltas:
 			self._delayed_HP_deltas[organism] = (HP_delta, HP_delta_duration)
 		else:
 			self._delayed_HP_deltas[organism][1] += HP_delta_duration
+			
+	def change_num_moves(self, organism, move_bonus, move_bonus_duration):
+		if organism not in self._move_bonus_deltas:
+			self._move_bonus_deltas[organism] = (move_bonus, move_bonus_duration)
+		else:
+			self._move_bonus_deltas[organism][1] += move_bonus_duration
 			
 	def change_mana(self, mana_delta):
 		for organism, delta in zip(self._organisms, mana_delta):

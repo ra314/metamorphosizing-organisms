@@ -94,7 +94,7 @@ class Grid:
 				if grid_with_only_matches[y, x] != -1:
 					match_size = self._flood_fill(grid_with_only_matches, y, x)
 					if match_size > 3:
-						self._game.give_extra_move_now()
+						self._game.give_extra_move()
 
 	def _flood_fill(self, grid, y, x):
 		curr_tile = grid[y, x]

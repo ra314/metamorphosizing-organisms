@@ -15,6 +15,7 @@ class Game:
 		self.draw_buffer = []
 		self.activated_organisms = set()
 		self._actions_buffer = []
+		self.shuffle_water = False
 		self._start()
 
 	def draw(self):
@@ -34,23 +35,23 @@ class Game:
 		self._grid.add_game_reference_to_objects(self)
 
 	def _randomise_arena(self):
-		arenas = {'stadium': "Stadium: Each player has 60 starting HP",
+		arenas = {'tranquil falls': "Tranquil Falls: Water tiles will be shuffled at the start of a player's turn",
+		  'stadium': "Stadium: No stage modifiers are present",
 			'forest valley': "Forest Valley: 1 less Berry to evolve",
 			'abandoned town': "Abandoned Town: Evolving restores 10 HP"}
 		arena = random.choice(list(arenas.keys()))
 
 		if arena == 'stadium':
-			Player.max_HP = 60
-			# noinspection PyPep8Naming
-			self._players[0].curr_HP = 60
-			# noinspection PyPep8Naming
-			self._players[1].curr_HP = 60
 
 		elif arena == 'forest valley':
 			Player.berries_to_evolve -= 1
 
 		elif arena == 'abandoned town':
 			Player.HP_restored_on_evolution = 10
+			
+		elif arena == 'tranquil falls':
+			# Currently does nothing
+			self.shuffle_water = True
 
 		self.draw_buffer.append(arenas[arena])
 			
@@ -105,11 +106,12 @@ class Game:
 			self._next_player.reset_moves()
 			self._curr_player, self._next_player = self._next_player, self._curr_player
 
+	def _shuffle_water_tiles():
+		# Placeholder function
+		pass
+		
 	def _swap_tiles_in_grid(self, x1, y1, x2, y2):
 		self._grid.swap(x1, y1, x2, y2)
-
-	def give_extra_move_now(self):
-		self._curr_player.give_extra_move(True)
 		
 	def _process_ability(self, organism):
 		organism.num_mana = 0
@@ -156,7 +158,7 @@ class Game:
 			organism.change_num_mana(mana_stolen)
 
 		# Increasing move count on next turn
-		if organism.ability.increase_move_count:
-			self._curr_player.give_extra_move(False)
+		if organism.ability.move_bonus_delta:
+			self._curr_player.change_num_moves(organism, organism.ability.move_bonus_delta, organism.ability.move_bonus_duration)
 
 		self.draw()
