@@ -143,7 +143,7 @@ class Game:
 		
 		# Changing Berries
 		if organism.ability.berries_to_steal:
-			berries_to_steal = min(organism.ability.berries_to_steal, self._next_player.berries)
+			berries_to_steal = min(organism.ability.berries_to_steal, self._next_player._num_berries)
 			# Steal the berries from the intended target
 			self._curr_player.change_num_berries(berries_to_steal)
 			self._next_player.change_num_berries(-berries_to_steal)
