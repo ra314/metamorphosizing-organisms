@@ -83,18 +83,21 @@ class Grid:
 	def _check_for_extra_move(self):
 		# Create a grid where the matched tiles retain their number and everything else is -1
 		grid_with_only_matches = np.zeros(self._grid.shape) - 1
+		print(grid_with_only_matches)
 		for y in range(self._grid.shape[0]):
 			for x in range(self._grid.shape[1]):
 				if self._matches[y, x]:
 					grid_with_only_matches[y, x] = self._grid[y, x]
+		print(grid_with_only_matches)
 
 		# Go through the grid with only matches and apply flood fill to find size of contiguous matches
 		for y in range(self._grid.shape[0]):
 			for x in range(self._grid.shape[1]):
 				if grid_with_only_matches[y, x] != -1:
 					match_size = self._flood_fill(grid_with_only_matches, y, x)
+					print(match_size)
 					if match_size > 3:
-						self._game.give_extra_move_now(True)
+						self._game.give_extra_move_now()
 
 	def _flood_fill(self, grid, y, x):
 		curr_tile = grid[y, x]
@@ -110,7 +113,9 @@ class Grid:
 					match_size += 1
 
 		# Performing flood fill
+		add_to_queue(y, x)
 		while queue:
+			y, x = queue.pop()
 			add_to_queue(y-1, x)
 			add_to_queue(y+1, x)
 			add_to_queue(y, x-1)

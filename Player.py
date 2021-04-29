@@ -9,7 +9,7 @@ class Player:
 		self._num_berries = 0
 		self._name = name
 		self.curr_HP = self.max_HP
-		self.moves = 0
+		self.moves = self.moves_per_turn
 		self._game = None
 		self._extra_move = False
 		self._extra_move_on_next_turn = False
