@@ -74,6 +74,7 @@ class Player:
 			self._extra_move = True
 
 		# Applying delayed HP_delta
+		print(self._delayed_HP_deltas.values())
 		for organism in self._delayed_HP_deltas.values():
 			HP_delta, turns_left = self._delayed_HP_deltas[organism]
 			self.change_HP(HP_delta)
@@ -119,3 +120,7 @@ class Player:
 			self._delayed_HP_deltas[organism] = (HP_delta, HP_delta_duration)
 		else:
 			self._delayed_HP_deltas[organism][1] += HP_delta_duration
+			
+	def change_mana(self, mana_delta):
+		for organism, delta in zip(self._organisms, mana_delta):
+			organism.change_num_mana(delta)

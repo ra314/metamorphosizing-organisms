@@ -96,6 +96,7 @@ class Game:
 
 		# Activating abilities
 		for organism in self.activated_organisms:
+			self.activated_organisms.remove(organism)
 			self._process_ability(organism)
 
 		# Moving to the next player if necessary
@@ -134,8 +135,8 @@ class Game:
 			if not self._curr_player.is_first_organism(organism):
 				mana_delta = [mana_delta[1], mana_delta[0], mana_delta[3], mana_delta[2]]
 
-			self._curr_player.change_HP(mana_delta[0])
-			self._next_player.change_HP(mana_delta[1])
+			self._curr_player.change_mana(mana_delta[:int(len(mana_delta)/2)])
+			self._next_player.change_mana(mana_delta[int(len(mana_delta)/2):])
 
 		# Converting tiles
 		if organism.ability.num_tiles_to_convert:
