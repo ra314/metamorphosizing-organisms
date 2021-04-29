@@ -6,6 +6,11 @@ from Grid import Grid
 class Game:
 	# Height and width
 	grid_size = (5, 7)
+	
+	# A list of lists with the current ability delay and the ability in question
+	# each inner list is formatted like so...
+	# (turns until activation, player to heal, amount to heal)
+	healing_buffs = []
 
 	def __init__(self, player1, player2):
 		self._players = (player1, player2)
@@ -103,6 +108,12 @@ class Game:
 		if self._curr_player.moves == 0:
 			self._next_player.reset_moves()
 			self._curr_player, self._next_player = self._next_player, self._curr_player
+			
+			# Checking delayed heals and decrement the turns until activation
+			for healing_buff in healing_buffs:
+				healing_buff[0] -= 1
+				#While we still have the buff active, heal the player
+				ability[1].change_HP(ability[2])
 
 	def _swap_tiles_in_grid(self, x1, y1, x2, y2):
 		self._grid.swap(x1, y1, x2, y2)
@@ -115,6 +126,7 @@ class Game:
 
 		# Changing HP
 		if organism.ability.HP_delta:
+<<<<<<< HEAD
 			# Checking for delayed HP Delta
 			if organism.ability.HP_delta_duration:
 				self._curr_player.add_delayed_HP_delta(organism, organism.ability.HP_delta[0], organism.ability.HP_delta_duration)
@@ -122,6 +134,18 @@ class Game:
 			else:
 				self._curr_player.change_HP(organism.ability.HP_delta[0])
 				self._next_player.change_HP(organism.ability.HP_delta[1])
+=======
+			# Changing the order of the delta to align it with the intended recipients
+			HP_delta = organism.ability.HP_delta
+			if not self._curr_player.is_first_organism(organism):
+				HP_delta = [delta[::-1] for delta in HP_delta]
+			
+			# Check if the ability has a delayed healing effect
+			if (organism.ability.HP_delta_duration) 
+				healing_buffs[len(healing_buffs)] = [organism.ability.HP_delta_duration, self._curr_player, HP_delta[0]]
+			else self._curr_player.change_HP(HP_delta[0])
+			self._next_player.change_HP(HP_delta[1])
+>>>>>>> master
 			
 		# Matching tiles in a specific shape
 		if organism.ability.tile_match_shape:
@@ -143,7 +167,7 @@ class Game:
 		
 		# Changing Berries
 		if organism.ability.berries_to_steal:
-			berries_to_steal = min(organism.ability.berries_to_steal, self._next_player.berries)
+			berries_to_steal = min(organism.ability.berries_to_steal, self._next_player._num_berries)
 			# Steal the berries from the intended target
 			self._curr_player.change_num_berries(berries_to_steal)
 			self._next_player.change_num_berries(-berries_to_steal)
