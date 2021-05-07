@@ -160,6 +160,11 @@ class Grid:
 		# Check if these parts of the shape are also within the grid
 		return y + tile_match_shape[0] < self._grid.shape[0] and x + tile_match_shape[1] < self._grid.shape[1]
 
+	def _generate_random_coordinates(self):
+		y = np.random.randint(self._grid.shape[0])
+		x = np.random.randint(self._grid.shape[1])
+		return y, x
+
 	def force_grid_match(self, tile_match_shape):
 		tile_match_shape = list(tile_match_shape)
 		# Replace -1s with height and width of grid
@@ -170,8 +175,7 @@ class Grid:
 
 		# Pick a random tile and check that the shape is inside the grid
 		while True:
-			seed_y = np.random.randint(self._grid.shape[0])
-			seed_x = np.random.randint(self._grid.shape[1])
+			seed_y, seed_x = self._generate_random_coordinates()
 			if self._shape_in_grid(tile_match_shape, seed_y, seed_x):
 				break
 
@@ -197,8 +201,21 @@ class Grid:
 		for i in range(num_tiles):
 			# Pick a random tile and check that the type is different to the desired type
 			while True:
-				seed_y = np.random.randint(self._grid.shape[0])
-				seed_x = np.random.randint(self._grid.shape[1])
-				if self._grid[seed_y, seed_x] != tile_type:
-					self._grid[seed_y, seed_x] = tile_type
+				y, x = self._generate_random_coordinates()
+				if self._grid[y, x] != tile_type:
+					self._grid[y, x] = tile_type
 					break
+
+	def shuffle_water_tiles(self):
+		water_tile_locations = self._grid == mana_indexes['water']
+		for y1 in range(self._grid.shape[0]):
+			for x1 in range(self._grid.shape[1]):
+				if water_tile_locations[y1, x1]:
+					while True:
+						y2, x2 = self._generate_random_coordinates()
+						if self._grid[y2, x2] != mana_indexes['water']:
+							self._grid[y1, x1], self._grid[y2, x2] = self._grid[y2, x2], self._grid[y1, x1]
+							break
+
+		self._game.draw()
+		self._match_grid()

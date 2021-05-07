@@ -79,7 +79,6 @@ class Player:
 
 		# Granting move bonuses
 		# Accounts for the Winklit + Nerverack edge-case
-		# print(self._move_bonus_deltas.values())
 		for organism in self._move_bonus_deltas.values():
 			move_bonus_delta, duration = self._move_bonus_deltas[organism].values()
 			if move_bonus_delta < 0:
@@ -90,7 +89,6 @@ class Player:
 		self.moves = max(0, self.moves)
 				
 		# Applying delayed HP_delta
-		print(self._delayed_HP_deltas.values())
 		for organism in self._delayed_HP_deltas.values():
 			HP_delta, duration = self._delayed_HP_deltas[organism].values()
 			self.change_HP(HP_delta)

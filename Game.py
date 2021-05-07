@@ -15,7 +15,7 @@ class Game:
 		self.draw_buffer = []
 		self.activated_organisms = set()
 		self._actions_buffer = []
-		self.shuffle_water = False
+		self._shuffle_water = False
 		self._start()
 
 	def draw(self):
@@ -41,6 +41,8 @@ class Game:
 			'abandoned town': "Abandoned Town: Evolving restores 10 HP"}
 		arena = random.choice(list(arenas.keys()))
 
+		arena = 'tranquil falls'
+
 		if arena == 'stadium':
 			pass
 
@@ -52,7 +54,7 @@ class Game:
 			
 		elif arena == 'tranquil falls':
 			# Currently does nothing
-			self.shuffle_water = True
+			self._shuffle_water = True
 
 		self.draw_buffer.append(arenas[arena])
 			
@@ -71,6 +73,10 @@ class Game:
 		self._curr_player.add_mana(matches_per_type)
 
 	def request_move(self):
+		# Shuffling water tiles at start of turn
+		if self._shuffle_water:
+			self._shuffle_water_tiles()
+
 		# Add the always available swap action
 		actions_str = ["Swap 2 tiles: (x1 y1 x2 y2)"]
 		self._actions_buffer = [self._swap_tiles_in_grid]
@@ -108,8 +114,7 @@ class Game:
 			self._curr_player, self._next_player = self._next_player, self._curr_player
 
 	def _shuffle_water_tiles(self):
-		# Placeholder function
-		pass
+		self._grid.shuffle_water_tiles()
 		
 	def _swap_tiles_in_grid(self, x1, y1, x2, y2):
 		self._grid.swap(x1, y1, x2, y2)
