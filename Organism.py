@@ -94,3 +94,8 @@ stage_2_organisms['Bandicrook'] = Organism('Bandicrook', abilities['Pickpocket_p
                                          mana_indexes['psychic'], None)
 stage_1_organisms['Criminook'] = Organism('Criminook', abilities['Pickpocket'],
                                           mana_indexes['psychic'], stage_2_organisms['Bandicrook'])
+
+stage_2_organisms['Wreckore'] = Organism('Wreckore', abilities['Punish_plus'],
+                                         mana_indexes['water'], None)
+stage_1_organisms['Nerverack'] = Organism('Nerverack', abilities['Punish'],
+                                          mana_indexes['water'], stage_2_organisms['Wreckore'])
