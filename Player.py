@@ -72,25 +72,29 @@ class Player:
 		self.moves = self.moves_per_turn
 		self._extra_move = False
 
+		def decrement_duration(dictionary, key):
+			dictionary[key]["duration"] -= 1
+			if not dictionary[key]["duration"]:
+				del dictionary[key]
+
 		# Granting move bonuses
 		# Accounts for the Winklit + Nerverack edge-case
 		# print(self._move_bonus_deltas.values())
 		for organism in self._move_bonus_deltas.values():
-			bonus, turns_left = self._move_bonus_deltas[organism]
-			turns_left -= 1
-			self.moves += bonus
-			if not turns_left:
-				del self._move_bonus_deltas[organism]
+			move_bonus_delta, duration = self._move_bonus_deltas[organism].values()
+			if move_bonus_delta < 0:
+				self.moves += move_bonus_delta
+			else:
+				self.give_extra_move()
+			decrement_duration(self._move_bonus_deltas, organism)
+		self.moves = max(0, self.moves)
 				
 		# Applying delayed HP_delta
 		print(self._delayed_HP_deltas.values())
 		for organism in self._delayed_HP_deltas.values():
-			HP_delta, turns_left = self._delayed_HP_deltas[organism]
+			HP_delta, duration = self._delayed_HP_deltas[organism].values()
 			self.change_HP(HP_delta)
-			turns_left -= 1
-			self._delayed_HP_deltas[organism][1] = turns_left
-			if not turns_left:
-				del self._delayed_HP_deltas[organism]
+			decrement_duration(self._move_bonus_deltas, organism)
 		
 	def add_mana(self, matches_per_type):
 		# Collecting berries
@@ -122,16 +126,16 @@ class Player:
 			self.moves += 1
 
 	def add_delayed_HP_delta(self, organism, HP_delta, HP_delta_duration):
-		if organism not in self._delayed_HP_deltas:
-			self._delayed_HP_deltas[organism] = (HP_delta, HP_delta_duration)
-		else:
-			self._delayed_HP_deltas[organism][1] += HP_delta_duration
+		self.increment_effect_duration(self._delayed_HP_deltas, organism, HP_delta, HP_delta_duration)
 			
-	def change_num_moves(self, organism, move_bonus, move_bonus_duration):
-		if organism not in self._move_bonus_deltas:
-			self._move_bonus_deltas[organism] = (move_bonus, move_bonus_duration)
+	def change_num_moves(self, organism, move_bonus_delta, move_bonus_duration):
+		self.increment_effect_duration(self._move_bonus_deltas, organism, move_bonus_delta, move_bonus_duration)
+
+	def increment_effect_duration(self, dictionary, organism, delta, duration):
+		if organism not in dictionary:
+			dictionary[organism] = {"delta": delta, "duration": duration}
 		else:
-			self._move_bonus_deltas[organism][1] += move_bonus_duration
+			dictionary[organism]["duration"] += duration
 			
 	def change_mana(self, mana_delta):
 		for organism, delta in zip(self._organisms, mana_delta):

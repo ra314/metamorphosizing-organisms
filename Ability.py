@@ -19,8 +19,7 @@ class Ability:
         "duration of the healing"
 				
         self.num_tiles_to_convert = num_tiles_to_convert
-				"amount of tiles this ability will convert" \
-				"relative to the organism's mana type"
+        "amount of tiles this ability will convert relative to the organism's mana type"
 				
         self.move_bonus_delta = move_bonus_delta
         "amount of bonus moves this ability grants"

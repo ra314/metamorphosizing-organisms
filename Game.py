@@ -36,12 +36,13 @@ class Game:
 
 	def _randomise_arena(self):
 		arenas = {'tranquil falls': "Tranquil Falls: Water tiles will be shuffled at the start of a player's turn",
-		  'stadium': "Stadium: No stage modifiers are present",
+			'stadium': "Stadium: No stage modifiers are present",
 			'forest valley': "Forest Valley: 1 less Berry to evolve",
 			'abandoned town': "Abandoned Town: Evolving restores 10 HP"}
 		arena = random.choice(list(arenas.keys()))
 
 		if arena == 'stadium':
+			pass
 
 		elif arena == 'forest valley':
 			Player.berries_to_evolve -= 1
@@ -106,7 +107,7 @@ class Game:
 			self._next_player.reset_moves()
 			self._curr_player, self._next_player = self._next_player, self._curr_player
 
-	def _shuffle_water_tiles():
+	def _shuffle_water_tiles(self):
 		# Placeholder function
 		pass
 		
