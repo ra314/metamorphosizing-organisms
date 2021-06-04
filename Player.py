@@ -1,24 +1,20 @@
-class Player:
+from Drawable import Drawable
+
+
+class Player(Drawable):
 	max_HP = 80
 	moves_per_turn = 2
 	berries_to_evolve = 4
 	HP_restored_on_evolution = 0
 
 	def __init__(self, organism1, organism2, name):
-		self._organisms = (organism1, organism2)
+		self.organisms = (organism1, organism2)
 		self.num_berries = 0
 		self._name = name
 		self.curr_HP = self.max_HP
-		self.moves = self.moves_per_turn
+		self.moves = 0
 		self._game = None
 		self._extra_move = False
-		
-		#Whether this player has an extra or lost one of their moves
-		#Winklit/Nerverack's abilities affect this
-		self._move_bonus_deltas = {}
-		
-		#Eilfin's healing ability
-		self._delayed_HP_deltas = {}
 
 	def __str__(self):
 		return self._name
@@ -30,15 +26,15 @@ class Player:
 			f"HP: {HP_str} \n" \
 			f"Berries (0): {berries_str} \n" \
 			f"Moves Left: {self.moves} \n" \
-			f"{self._organisms[0].draw()} \n" \
-			f"{self._organisms[1].draw()}"
+			f"{self.organisms[0].draw()} \n" \
+			f"{self.organisms[1].draw()}"
 
 	def get_actions(self):
 		actions_str = []
 		actions = []
 		# Add evolution and boost actions where appropriate if the player has enough berries
 		if self.num_berries == self.berries_to_evolve:
-			for index, organism in enumerate(self._organisms):
+			for index, organism in enumerate(self.organisms):
 				if organism.evolution:
 					actions_str.append(f"Evolve {organism.name}")
 					actions.append(lambda index = index: self.evolve_organism(index))
@@ -60,81 +56,34 @@ class Player:
 
 	def evolve_organism(self, organism_index):
 		self.change_HP(self.HP_restored_on_evolution)
-		self._organisms[organism_index].evolve()
+		self.organisms[organism_index].evolve()
 		self._game.draw()
 		self.num_berries = 0
 
 	def boost_organism(self, organism_index):
-		self._organisms[organism_index].change_num_mana(self.num_berries)
+		self.organisms[organism_index].change_num_mana(self.num_berries)
 		self.num_berries = 0
 		
 	def reset_moves(self):
-		self.moves = self.moves_per_turn
+		# Preventing a move underflow
+		self.moves = max(0, self.moves + 2)
 		self._extra_move = False
-
-		def decrement_duration(dictionary, key):
-			dictionary[key]["duration"] -= 1
-			if not dictionary[key]["duration"]:
-				del dictionary[key]
-
-		# Granting move bonuses
-		# Accounts for the Winklit + Nerverack edge-case
-		for organism in self._move_bonus_deltas.values():
-			move_bonus_delta, duration = self._move_bonus_deltas[organism].values()
-			if move_bonus_delta < 0:
-				self.moves += move_bonus_delta
-			else:
-				self.give_extra_move()
-			decrement_duration(self._move_bonus_deltas, organism)
-		self.moves = max(0, self.moves)
-				
-		# Applying delayed HP_delta
-		for organism in self._delayed_HP_deltas.values():
-			HP_delta, duration = self._delayed_HP_deltas[organism].values()
-			self.change_HP(HP_delta)
-			decrement_duration(self._move_bonus_deltas, organism)
 		
 	def add_mana(self, matches_per_type):
 		# Collecting berries
 		self.change_num_berries(matches_per_type[0])
 		# Distributing mana
-		for organism in self._organisms:
+		for organism in self.organisms:
 			mana_gained = matches_per_type[organism.mana_type_index]
 			mana_remaining = organism.change_num_mana(mana_gained)
 			matches_per_type[organism.mana_type_index] = mana_remaining
 
 	def add_game_reference_to_objects(self, game):
 		self._game = game
-		for organism in self._organisms:
+		for organism in self.organisms:
 			organism.add_game_reference_to_objects(game)
-			
-	def is_first_organism(self, organism):
-		return self._organisms[0] == organism
-
-	# Steal mana from the organism with the most and return the amount of mana stolen
-	def steal_mana(self, mana_to_steal):
-		selected_organism = max(self._organisms, key=lambda organism: organism.num_mana)
-		mana_to_steal = min(selected_organism.num_mana, mana_to_steal)
-		selected_organism.change_num_mana(-mana_to_steal)
-		return mana_to_steal
 
 	def give_extra_move(self):
 		if not self._extra_move:
 			self._extra_move = True
 			self.moves += 1
-
-	def add_delayed_HP_delta(self, organism, HP_delta, HP_delta_duration):
-		self.increment_effect_duration(self._delayed_HP_deltas, organism, HP_delta, HP_delta_duration)
-			
-	def change_num_moves(self, organism, move_bonus_delta, move_bonus_duration):
-		self.increment_effect_duration(self._move_bonus_deltas, organism, move_bonus_delta, move_bonus_duration)
-
-	def increment_effect_duration(self, dictionary, organism, delta, duration):
-		if organism not in dictionary:
-			dictionary[organism] = {"delta": delta, "duration": duration}
-		else:
-			dictionary[organism]["duration"] += duration
-			
-	def change_mana(self, mana_delta):
-		for organism, delta in zip(self._organisms, mana_delta):
-			organism.change_num_mana(delta)

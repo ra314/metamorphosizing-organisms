@@ -1,8 +1,9 @@
 import numpy as np
 from ManaType import mana_indexes
+from Drawable import Drawable
 
 
-class Grid:
+class Grid(Drawable):
 	def __init__(self, grid_size):
 		self._grid = np.zeros(grid_size)
 		self._matches = None
@@ -94,7 +95,7 @@ class Grid:
 				if grid_with_only_matches[y, x] != -1:
 					match_size = self._flood_fill(grid_with_only_matches, y, x)
 					if match_size > 3:
-						self._game.give_extra_move()
+						self._game.curr_player.give_extra_move()
 
 	def _flood_fill(self, grid, y, x):
 		curr_tile = grid[y, x]
@@ -166,7 +167,9 @@ class Grid:
 		return y, x
 
 	def force_grid_match(self, tile_match_shape):
+		# tile_match_shape is a tuple of len 3. height, width and number of shapes
 		tile_match_shape = list(tile_match_shape)
+
 		# Replace -1s with height and width of grid
 		if tile_match_shape[0] == -1:
 			tile_match_shape[0] = self._grid.shape[0]
