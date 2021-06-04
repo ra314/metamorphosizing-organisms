@@ -205,7 +205,7 @@ class Eidelf(Organism):
 		super().__init__("Eidelf", 'Flower Dance+: Attacks for 10 HP and heals 10 HP at the end of the turn for two turns.', 6, mana_indexes['grass'], None)
 
 	def ability(self):
-		self.game.turn_end_events.append(self.FlowerDance(2, self.game, 10, -10))
+		self.game.turn_end_events.append(FlowerDance(2, self.game, 10, -10))
 
 
 class Elfini(Organism):
@@ -213,7 +213,7 @@ class Elfini(Organism):
 		super().__init__("Elfini", 'Flower Dance: Attacks for 5 HP and heals 5 HP at the end of the turn for two turns.', 6, mana_indexes['grass'], Eidelf)
 
 	def ability(self):
-		self.game.turn_end_events.append(self.FlowerDance(2, self.game, 5, -5))
+		self.game.turn_end_events.append(FlowerDance(2, self.game, 5, -5))
 
 
 class Starblitz(TurnEndEvent):
@@ -228,8 +228,8 @@ class Gleamur(Organism):
 		super().__init__("Gleamur", 'Starblitz+: Attacks for 15 HP and grants 1 extra move in the next turn.', 6, mana_indexes['electric'], None)
 
 	def ability(self):
-		self.game.next_player.change_HP(15)
-		self.game.turn_end_events.append(self.Starblitz(2, self.game))
+		self.game.next_player.change_HP(-15)
+		self.game.turn_end_events.append(Starblitz(2, self.game))
 
 
 class Winklit(Organism):
@@ -237,8 +237,8 @@ class Winklit(Organism):
 		super().__init__("Winklit", 'Starblitz: Attacks for 10 HP and grants 1 extra move in the next turn.', 6, mana_indexes['electric'], Gleamur)
 
 	def ability(self):
-		self.game.next_player.change_HP(10)
-		self.game.turn_end_events.append(self.Starblitz(2, self.game))
+		self.game.next_player.change_HP(-10)
+		self.game.turn_end_events.append(Starblitz(2, self.game))
 
 
 class Flambagant(Organism):
@@ -246,7 +246,7 @@ class Flambagant(Organism):
 		super().__init__("Flambagant", 'Hugs+: Attacks for 15 HP and gives 3 mana to your other monster.', 6, mana_indexes['fire'], None)
 
 	def ability(self):
-		self.game.next_player.change_HP(15)
+		self.game.next_player.change_HP(-15)
 		index_of_self = self.game.curr_player.organisms.index(self)
 		self.game.curr_player.organisms[(index_of_self+1) % 2].change_num_mana(3)
 
@@ -256,7 +256,7 @@ class Timingo(Organism):
 		super().__init__("Timingo", 'Hugs: Attacks for 10 HP and gives 2 mana to your other monster.', 6, mana_indexes['fire'], Flambagant)
 
 	def ability(self):
-		self.game.next_player.change_HP(10)
+		self.game.next_player.change_HP(-10)
 		index_of_self = self.game.curr_player.organisms.index(self)
 		self.game.curr_player.organisms[(index_of_self+1) % 2].change_num_mana(2)
 
@@ -266,7 +266,7 @@ class Bandicrook(Organism):
 		super().__init__("Bandicrook", 'Pickpocket+: Attacks for 10 HP and steals up to 2 berries and 2 mana.', 6, mana_indexes['psychic'], None)
 
 	def ability(self):
-		self.game.next_player.change_HP(10)
+		self.game.next_player.change_HP(-10)
 
 		num_stolen_berries = min(0, self.game.next_player.num_berries - 2) + 2
 		self.game.curr_player.change_num_berries(num_stolen_berries)
@@ -283,7 +283,7 @@ class Criminook(Organism):
 		super().__init__("Criminook", 'Pickpocket: Attacks for 10 HP and steals up to 2 berries and 1 mana.', 6, mana_indexes['psychic'], Bandicrook)
 
 	def ability(self):
-		self.game.next_player.change_HP(10)
+		self.game.next_player.change_HP(-10)
 
 		num_stolen_berries = min(0, self.game.next_player.num_berries - 2) + 2
 		self.game.curr_player.change_num_berries(num_stolen_berries)
@@ -308,8 +308,8 @@ class Wreckore(Organism):
 		super().__init__("Wreckore", 'Punish+: Attacks for 45 HP but loses 1 move for the next 2 turns.', 10, mana_indexes['water'], None)
 
 	def ability(self):
-		self.game.next_player.change_HP(45)
-		self.game.turn_end_events.append(self.Starblitz(4, self.game))
+		self.game.next_player.change_HP(-45)
+		self.game.turn_end_events.append(Punish(4, self.game))
 
 
 class Nerverack(Organism):
@@ -317,8 +317,8 @@ class Nerverack(Organism):
 		super().__init__("Nerverack", 'Punish: Attacks for 35 HP but loses 1 move for the next 1 turn.', 10, mana_indexes['water'], Wreckore)
 
 	def ability(self):
-		self.game.next_player.change_HP(35)
-		self.game.turn_end_events.append(self.Starblitz(2, self.game))
+		self.game.next_player.change_HP(-35)
+		self.game.turn_end_events.append(Punish(2, self.game))
 
 
 stage_1_organisms = [Bonzumi(), Pelijet(), Turtleisk(), Slickitty(), Barbenin(), Pyrokun(), Trashark(), Elfini(), Winklit(), Timingo(), Criminook(), Nerverack()]

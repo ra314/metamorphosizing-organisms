@@ -78,6 +78,17 @@ class Game(Drawable):
 		actions_str = ["Swap 2 tiles: (x1 y1 x2 y2)"]
 		self._actions_buffer = [self._swap_tiles_in_grid]
 
+		# Debug options
+		debug = True
+		if debug:
+			for organism in self.curr_player.organisms:
+				actions_str.append(f"Give {organism} x mana")
+				self._actions_buffer.append(organism.change_num_mana)
+				actions_str.append(f"Evolve {organism}")
+				self._actions_buffer.append(organism.evolve)
+			actions_str.append("Do nothing")
+			self._actions_buffer.append(lambda: None)
+
 		# Getting and adding actions from the player
 		player_actions_str, player_actions = self.curr_player.get_actions()
 		actions_str.extend(player_actions_str)
@@ -92,7 +103,7 @@ class Game(Drawable):
 	def process_move(self, index, player_inputs):
 		# Parsing the selected action
 		action = self._actions_buffer[index]
-		if action.__name__ == "_swap_tiles_in_grid":
+		if player_inputs:
 			action(*player_inputs)
 		else:
 			action()
