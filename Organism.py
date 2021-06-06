@@ -195,7 +195,7 @@ class FlowerDance(TurnEndEvent):
 		self.damage = damage
 
 	def act(self):
-		self.next_player.change_HP(-self.damage)
+		self.next_player.change_HP(self.damage)
 		self.curr_player.change_HP(self.heal)
 		super().act()
 

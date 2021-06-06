@@ -7,4 +7,12 @@ Make game, player and organism children of this class.
 
 EVERYTHING ABOVE HAS BEEN DONE
 
+Add validation for how far you're allowed to mvoe tiles. 
+i.e don't allow arbitary swapping of tiles
+
+Fix grid match bug in feeding in the arguments
+
 https://old.reddit.com/r/learnprogramming/comments/2khyfd/javaoop_question_im_working_a_pokemon_project/cllsv59/
+
+NB
+Make sure to use the public IP when binding when playing over hamachi.

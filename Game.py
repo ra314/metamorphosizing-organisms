@@ -70,16 +70,12 @@ class Game(Drawable):
 		self.curr_player.add_mana(matches_per_type)
 
 	def request_move(self):
-		# Shuffling water tiles at start of turn
-		if self._shuffle_water:
-			self._shuffle_water_tiles()
-
 		# Add the always available swap action
 		actions_str = ["Swap 2 tiles: (x1 y1 x2 y2)"]
 		self._actions_buffer = [self._swap_tiles_in_grid]
 
 		# Debug options
-		debug = True
+		debug = False
 		if debug:
 			for index, organism in enumerate(self.curr_player.organisms):
 				actions_str.append(f"Give {organism} x mana")
@@ -131,6 +127,10 @@ class Game(Drawable):
 
 			# Removing unsubscribed turn end events
 			self.turn_end_events = [event for event in self.turn_end_events if event.subscribed]
+			
+			# Shuffling water tiles at start of turn
+			if self._shuffle_water:
+				self._shuffle_water_tiles()
 
 	def _shuffle_water_tiles(self):
 		self.grid.shuffle_water_tiles()
