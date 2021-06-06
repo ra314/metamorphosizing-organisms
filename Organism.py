@@ -273,9 +273,9 @@ class Bandicrook(Organism):
 		self.game.next_player.change_num_berries(-num_stolen_berries)
 
 		organism_to_steal_mana_from = max(self.game.next_player.organisms, key=lambda x: x.num_mana)
-		num_mana_stolen = min(0, organism_to_steal_mana_from.num_name - 2) + 2
+		num_mana_stolen = min(0, organism_to_steal_mana_from.num_mana - 2) + 2
 		self.change_num_mana(num_mana_stolen)
-		organism_to_steal_mana_from.chane_num_mana(-num_mana_stolen)
+		organism_to_steal_mana_from.change_num_mana(-num_mana_stolen)
 
 
 class Criminook(Organism):
@@ -290,9 +290,9 @@ class Criminook(Organism):
 		self.game.next_player.change_num_berries(-num_stolen_berries)
 
 		organism_to_steal_mana_from = max(self.game.next_player.organisms, key=lambda x: x.num_mana)
-		num_mana_stolen = min(0, organism_to_steal_mana_from.num_name - 1) + 1
+		num_mana_stolen = min(0, organism_to_steal_mana_from.num_mana - 1) + 1
 		self.change_num_mana(num_mana_stolen)
-		organism_to_steal_mana_from.chane_num_mana(-num_mana_stolen)
+		organism_to_steal_mana_from.change_num_mana(-num_mana_stolen)
 
 
 class Punish(TurnEndEvent):
