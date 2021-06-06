@@ -298,7 +298,7 @@ class Criminook(Organism):
 class Punish(TurnEndEvent):
 	def act(self):
 		if self.curr_num_turns_active >= 1:
-			if self.game.curr_player == self.next_player:
+			if self.game.curr_player == self.curr_player:
 				self.curr_player.moves -= 1
 		super().act()
 

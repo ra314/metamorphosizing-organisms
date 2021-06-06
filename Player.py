@@ -8,7 +8,7 @@ class Player(Drawable):
 	HP_restored_on_evolution = 0
 
 	def __init__(self, organism1, organism2, name):
-		self.organisms = (organism1, organism2)
+		self.organisms = [organism1, organism2]
 		self.num_berries = 0
 		self._name = name
 		self.curr_HP = self.max_HP
@@ -56,7 +56,7 @@ class Player(Drawable):
 
 	def evolve_organism(self, organism_index):
 		self.change_HP(self.HP_restored_on_evolution)
-		self.organisms[organism_index].evolve()
+		self.organisms[organism_index] = self.organisms[organism_index].evolve()
 		self._game.draw()
 		self.num_berries = 0
 

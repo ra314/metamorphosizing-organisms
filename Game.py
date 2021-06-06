@@ -81,11 +81,12 @@ class Game(Drawable):
 		# Debug options
 		debug = True
 		if debug:
-			for organism in self.curr_player.organisms:
+			for index, organism in enumerate(self.curr_player.organisms):
 				actions_str.append(f"Give {organism} x mana")
 				self._actions_buffer.append(organism.change_num_mana)
-				actions_str.append(f"Evolve {organism}")
-				self._actions_buffer.append(organism.evolve)
+				if organism.evolution:
+					actions_str.append(f"Evolve {organism}")
+					self._actions_buffer.append(lambda index = index: self.curr_player.evolve_organism(index))
 			actions_str.append("Do nothing")
 			self._actions_buffer.append(lambda: None)
 
@@ -124,6 +125,7 @@ class Game(Drawable):
 			self.curr_player, self.next_player = self.next_player, self.curr_player
 
 			# Running turn end events
+			print(self.turn_end_events)
 			for event in self.turn_end_events:
 				event.act()
 
