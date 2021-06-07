@@ -40,7 +40,7 @@ class Player(Drawable):
 					actions.append(lambda index = index: self.evolve_organism(index))
 				else:
 					actions_str.append(f"Boost {organism.name}")
-					actions.append(lambda: self.boost_organism(index))
+					actions.append(lambda index = index: self.boost_organism(index))
 		return actions_str, actions
 
 	def change_HP(self, delta):
@@ -61,6 +61,7 @@ class Player(Drawable):
 		self.num_berries = 0
 
 	def boost_organism(self, organism_index):
+		print(f"The name of the organism being boosted is {self.organisms[organism_index].name} and the index is {organism_index}")
 		self.organisms[organism_index].change_num_mana(self.num_berries)
 		self.num_berries = 0
 		

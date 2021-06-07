@@ -84,6 +84,8 @@ class Game(Drawable):
 				if organism.evolution:
 					actions_str.append(f"Evolve {organism}")
 					self._actions_buffer.append(lambda index = index: self.curr_player.evolve_organism(index))
+			actions_str.append(f"Give {self.curr_player} x berries")
+			self._actions_buffer.append(self.curr_player.change_num_berries)
 			actions_str.append("Do nothing")
 			self._actions_buffer.append(lambda: None)
 
@@ -110,7 +112,7 @@ class Game(Drawable):
 		if not return_value:
 			if action.__name__ == "_swap_tiles_in_grid":
 				print("Incorrect parameters for swap")
-			return
+				return
 
 		# Deleting the actions buffer
 		self._actions_buffer = []
