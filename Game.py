@@ -101,10 +101,17 @@ class Game(Drawable):
 	def process_move(self, index, player_inputs):
 		# Parsing the selected action
 		action = self._actions_buffer[index]
+		return_value = True
 		if player_inputs:
-			action(*player_inputs)
+			return_value = action(*player_inputs)
 		else:
 			action()
+		# Checking for an incorrect swap
+		if not return_value:
+			if action.__name__ == "_swap_tiles_in_grid":
+				print("Incorrect parameters for swap")
+			return
+
 		# Deleting the actions buffer
 		self._actions_buffer = []
 
@@ -137,4 +144,7 @@ class Game(Drawable):
 		self.grid.shuffle_water_tiles()
 		
 	def _swap_tiles_in_grid(self, x1, y1, x2, y2):
+		if abs(x1-x2) + abs(y1-y2) != 1:
+			return False
 		self.grid.swap(x1, y1, x2, y2)
+		return True

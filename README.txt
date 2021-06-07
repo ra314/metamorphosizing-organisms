@@ -4,17 +4,15 @@ Have an abstract organim class that all of the organisms inherit from.
 Print the mana cost next to the abilities when the players are selecting organisms
 Create an abstract class drawable with the abstract method draw.
 Make game, player and organism children of this class.
-
-EVERYTHING ABOVE HAS BEEN DONE
-
+Fix infinite while loop when trying to force a grid match
+Fix grid match bug in feeding in the arguments
 Add validation for how far you're allowed to mvoe tiles. 
 i.e don't allow arbitary swapping of tiles
 
-Fix grid match bug in feeding in the arguments
+EVERYTHING ABOVE HAS BEEN DONE
 
 Fix the bug that occured with boosting magnooki. It was at 6 mana, it needed 10 for activation and you boosted with 4 berries, but it didn't go through.	
 
-Fix infinite while loop when trying to force a grid match
 
 https://old.reddit.com/r/learnprogramming/comments/2khyfd/javaoop_question_im_working_a_pokemon_project/cllsv59/
 
