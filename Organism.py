@@ -36,7 +36,7 @@ class Organism(Drawable, ABC):
 		prev_mana = self.num_mana
 		self.num_mana = min(max(0, delta + self.num_mana), self.mana_to_activate_ability)
 
-		# Returning the amount of unused mana
+		# Returning the amount change in mana
 		return abs(self.num_mana - prev_mana)
 
 	def add_game_reference_to_objects(self, game):

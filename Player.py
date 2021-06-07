@@ -75,8 +75,8 @@ class Player(Drawable):
 		# Distributing mana
 		for organism in self.organisms:
 			mana_gained = matches_per_type[organism.mana_type_index]
-			mana_remaining = organism.change_num_mana(mana_gained)
-			matches_per_type[organism.mana_type_index] = mana_remaining
+			mana_unused = mana_gained - organism.change_num_mana(mana_gained)
+			matches_per_type[organism.mana_type_index] = mana_unused
 
 	def add_game_reference_to_objects(self, game):
 		self._game = game

@@ -67,6 +67,7 @@ class Game(Drawable):
 			f'{self.next_player} gets + 5 HP.')
 
 	def add_mana(self, matches_per_type):
+		print(f"Giving {matches_per_type} to {self.curr_player._name}")
 		self.curr_player.add_mana(matches_per_type)
 
 	def request_move(self):
@@ -111,8 +112,8 @@ class Game(Drawable):
 		for player in self._players:
 			for organism in player.organisms:
 				if organism.num_mana >= organism.mana_to_activate_ability:
-					organism.ability()
 					organism.num_mana = 0
+					organism.ability()
 
 		# Moving to the next player if necessary
 		self.curr_player.moves -= 1
