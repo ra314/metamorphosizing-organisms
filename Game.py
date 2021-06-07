@@ -75,7 +75,7 @@ class Game(Drawable):
 		self._actions_buffer = [self._swap_tiles_in_grid]
 
 		# Debug options
-		debug = False
+		debug = True
 		if debug:
 			for index, organism in enumerate(self.curr_player.organisms):
 				actions_str.append(f"Give {organism} x mana")

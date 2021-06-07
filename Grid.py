@@ -138,7 +138,7 @@ class Grid(Drawable):
 				for x in range(self._grid.shape[1]):
 					# If the current tile is matched and the tile above isn't, swap them
 					if self._grid[y, x] == -1 and self._grid[y-1, x] != -1 :
-						self._grid[y,x], self._grid[y-1,x] = self._grid[y-1,x], self._grid[y,x]
+						self._grid[y, x], self._grid[y-1, x] = self._grid[y-1, x], self._grid[y, x]
 						tile_shifted = True
 
 	def _fill_matched_tiles(self):
@@ -159,7 +159,7 @@ class Grid(Drawable):
 	def _shape_in_grid(self, tile_match_shape, y, x):
 		# Start from the given seed and extend by the height and width of the shape
 		# Check if these parts of the shape are also within the grid
-		return y + tile_match_shape[0] < self._grid.shape[0] and x + tile_match_shape[1] < self._grid.shape[1]
+		return y + tile_match_shape[0] <= self._grid.shape[0] and x + tile_match_shape[1] <= self._grid.shape[1]
 
 	def _generate_random_coordinates(self):
 		y = np.random.randint(self._grid.shape[0])
@@ -167,8 +167,7 @@ class Grid(Drawable):
 		return y, x
 
 	def force_grid_match(self, tile_match_shape):
-		# tile_match_shape is a tuple of len 3. height, width and number of shapes
-		tile_match_shape = list(tile_match_shape)
+		# tile_match_shape is a list of len 3. height, width and number of shapes
 
 		# Replace -1s with height and width of grid
 		if tile_match_shape[0] == -1:
@@ -176,17 +175,30 @@ class Grid(Drawable):
 		if tile_match_shape[1] == -1:
 			tile_match_shape[1] = self._grid.shape[1]
 
-		# Pick a random tile and check that the shape is inside the grid
-		while True:
-			seed_y, seed_x = self._generate_random_coordinates()
-			if self._shape_in_grid(tile_match_shape, seed_y, seed_x):
-				break
+		while tile_match_shape[2]:
+			# Pick a random tile and check that the shape is inside the grid
+			while True:
+				print("Finding a shape that is in the grid")
+				seed_y, seed_x = self._generate_random_coordinates()
+				print(f"seed y is {seed_y} and seed x is {seed_x}")
+				if self._shape_in_grid(tile_match_shape, seed_y, seed_x):
+					break
 
-		# Mark those tiles as matched
-		for y in range(seed_y, seed_y + tile_match_shape[0]):
-			for x in range(seed_x, seed_x + tile_match_shape[1]):
-				self._matches_per_type[self._grid[y, x]] += 1
-				self._grid[y, x] = -1
+			print("Checking that the shape in the grid isn't already matched")
+			# Checking that where the shape is placed does not interefe with already matched tiles
+			for y in range(seed_y, seed_y + tile_match_shape[0]):
+				for x in range(seed_x, seed_x + tile_match_shape[1]):
+					if self._grid[y, x] == -1:
+						continue
+
+			# Mark those tiles as matched
+			for y in range(seed_y, seed_y + tile_match_shape[0]):
+				for x in range(seed_x, seed_x + tile_match_shape[1]):
+					self._matches_per_type[self._grid[y, x]] += 1
+					self._grid[y, x] = -1
+
+			# This part of tile_match_shape represents how many duplicates of the shape should be found
+			tile_match_shape[2] -= 1
 
 		# Clearing the force matched grid and checking for more matches
 		self._game.add_mana(self._matches_per_type)

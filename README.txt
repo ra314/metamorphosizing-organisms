@@ -12,6 +12,10 @@ i.e don't allow arbitary swapping of tiles
 
 Fix grid match bug in feeding in the arguments
 
+Fix the bug that occured with boosting magnooki. It was at 6 mana, it needed 10 for activation and you boosted with 4 berries, but it didn't go through.	
+
+Fix infinite while loop when trying to force a grid match
+
 https://old.reddit.com/r/learnprogramming/comments/2khyfd/javaoop_question_im_working_a_pokemon_project/cllsv59/
 
 NB

@@ -49,7 +49,7 @@ class Bonzire(Organism):
 
 	def ability(self):
 		self.game.next_player.change_HP(-25)
-		self.game.grid.force_grid_match(-1, 1, 2)
+		self.game.grid.force_grid_match([-1, 1, 2])
 
 
 class Bonzumi(Organism):
@@ -58,7 +58,7 @@ class Bonzumi(Organism):
 
 	def ability(self):
 		self.game.next_player.change_HP(-20)
-		self.game.grid.force_grid_match(-1, 1, 1)
+		self.game.grid.force_grid_match([-1, 1, 1])
 
 
 class Sephanix(Organism):
@@ -103,7 +103,7 @@ class Axelraze(Organism):
 
 	def ability(self):
 		self.game.next_player.change_HP(-10)
-		self.game.grid.force_grid_match(3, 2, 1)
+		self.game.grid.force_grid_match([3, 2, 1])
 
 
 class Slickitty(Organism):
@@ -112,7 +112,7 @@ class Slickitty(Organism):
 
 	def ability(self):
 		self.game.next_player.change_HP(-5)
-		self.game.grid.force_grid_match(2, 2, 1)
+		self.game.grid.force_grid_match([2, 2, 1])
 
 
 class Scoprikon(Organism):
@@ -141,7 +141,7 @@ class Magnooki(Organism):
 
 	def ability(self):
 		self.game.next_player.change_HP(-35)
-		self.game.grid.force_grid_match(1, -1, 1)
+		self.game.grid.force_grid_match([1, -1, 1])
 
 
 class Pyrokun(Organism):
@@ -150,7 +150,7 @@ class Pyrokun(Organism):
 
 	def ability(self):
 		self.game.next_player.change_HP(-25)
-		self.game.grid.force_grid_match(1, -1, 1)
+		self.game.grid.force_grid_match([1, -1, 1])
 
 
 class Shardivore(Organism):
