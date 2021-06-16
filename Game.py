@@ -76,7 +76,7 @@ class Game(Drawable):
 		self._actions_buffer = [self._swap_tiles_in_grid]
 
 		# Debug options
-		debug = True
+		debug = False
 		if debug:
 			for index, organism in enumerate(self.curr_player.organisms):
 				actions_str.append(f"Give {organism} x mana")
@@ -118,11 +118,15 @@ class Game(Drawable):
 		self._actions_buffer = []
 
 		# Activating abilities
-		for player in self._players:
-			for organism in player.organisms:
-				if organism.num_mana >= organism.mana_to_activate_ability:
-					organism.num_mana = 0
-					organism.ability()
+		ability_activated = True
+		while ability_activated:
+			ability_activated = False
+			for player in self._players:
+				for organism in player.organisms:
+					if organism.num_mana >= organism.mana_to_activate_ability:
+						organism.num_mana = 0
+						organism.ability()
+						ability_activated = True
 
 		# Moving to the next player if necessary
 		self.curr_player.moves -= 1
