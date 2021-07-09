@@ -202,10 +202,10 @@ class FlowerDance(TurnEndEvent):
 
 class Eidelf(Organism):
 	def __init__(self):
-		super().__init__("Eidelf", 'Flower Dance+: Attacks for 10 HP and heals 10 HP at the end of the turn for two turns.', 6, mana_indexes['grass'], None)
+		super().__init__("Eidelf", 'Flower Dance+: Attacks for 5 HP and heals 10 HP at the end of the turn for two turns.', 6, mana_indexes['grass'], None)
 
 	def ability(self):
-		self.game.turn_end_events.append(FlowerDance(2, self.game, 10, -10))
+		self.game.turn_end_events.append(FlowerDance(2, self.game, 5, -10))
 
 
 class Elfini(Organism):
