@@ -33,14 +33,20 @@ def receive_and_send_client_action(clients, game):
 	if not actions_str:
 		return 0
 	client = clients[str(curr_player)]
-	client.send((
-		            f"{game.draw_buffer.pop(0)} \n\n"
-		            f"{enumerate_choices(actions_str)}{separator}").encode())
-	response = (client.recv(BUF_SIZE)).decode('utf-8')
-	response = [int(num) for num in response.split()]
-	index = response[0]
-	additional_arguments = response[1:]
-	game.process_move(index, additional_arguments)
+	message_to_client = str(
+				        f"{game.draw_buffer.pop(0)} \n\n"
+				        f"{enumerate_choices(actions_str)}{separator}")
+	
+	input_sucessfully_processed = False
+	while not input_sucessfully_processed:
+		client.send(message_to_client.encode())
+		response = None
+		print("Waiting for response")
+		response = (client.recv(BUF_SIZE)).decode('utf-8')
+		response = [int(num) for num in response.split()]
+		index = response[0]
+		additional_arguments = response[1:]
+		input_sucessfully_processed = game.process_move(index, additional_arguments)
 	return 1
 
 

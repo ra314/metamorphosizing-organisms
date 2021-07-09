@@ -102,17 +102,25 @@ class Game(Drawable):
 
 	def process_move(self, index, player_inputs):
 		# Parsing the selected action
-		action = self._actions_buffer[index]
+		try:
+			action = self._actions_buffer[index]
+		except:
+			print("Index out of bound")
+			return 0
+		
 		return_value = True
 		if player_inputs:
-			return_value = action(*player_inputs)
+			try:
+				return_value = action(*player_inputs)
+			except:
+				return 0
 		else:
 			action()
-		# Checking for an incorrect swap
-		if not return_value:
-			if action.__name__ == "_swap_tiles_in_grid":
-				print("Incorrect parameters for swap")
-				return
+		
+		# Checking for a non adjacent swap
+		if action.__name__ == "_swap_tiles_in_grid" and return_value == False:
+			print("Incorrect parameters for swap")
+			return 0
 
 		# Deleting the actions buffer
 		self._actions_buffer = []
@@ -127,6 +135,7 @@ class Game(Drawable):
 						organism.num_mana = 0
 						organism.ability()
 						ability_activated = True
+		return 1
 
 		# Moving to the next player if necessary
 		self.curr_player.moves -= 1
