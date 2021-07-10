@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from ManaType import mana_indexes, mana_types
+from ManaType import mana_indexes, mana_types, mana_colors
 from Drawable import Drawable
 
 
@@ -19,7 +19,7 @@ class Organism(Drawable, ABC):
 
 	def draw(self):
 		mana_str = ('+' * self.num_mana) + ('-' * (self.mana_to_activate_ability - self.num_mana))
-		return f"{self.name} ({self.mana_type_index}): {mana_str}"
+		return f"{mana_colors[self.mana_type_index]}{self.name} ({self.mana_type_index}): {mana_str} \u001b[0m"
 
 	def evolve(self):
 		evolved_organism = self.evolution()

@@ -1,5 +1,5 @@
 import numpy as np
-from ManaType import mana_indexes
+from ManaType import mana_indexes, mana_colors
 from Drawable import Drawable
 
 
@@ -12,15 +12,21 @@ class Grid(Drawable):
 		self._initialize_grid()
 
 	def __str__(self):
-		return str(self._grid)
+		output = ""
+		for row in self._grid:
+			for tile in row:
+				output += f"{mana_colors[tile]}{tile}"
+			output += "\n"
+		output += "\u001b[0m"
+		return output
 
 	def draw(self):
 		return (
 			f"Grid: \n"
-			f"{self._grid} \n"
+			f"{self} \n"
 			f"Matches made: \n"
-			f"{np.arange(len(self._matches_per_type))} \n"
-			f"{self._matches_per_type}")
+			f"{' '.join([mana_colors[num]+str(num) for num in np.arange(len(self._matches_per_type))])} \u001b[0m \n"
+			f"{' '.join([str(num) for num in self._matches_per_type])}")
 
 	def _initialize_grid(self):
 		self._generate_tiles()
