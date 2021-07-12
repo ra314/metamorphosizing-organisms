@@ -135,7 +135,6 @@ class Game(Drawable):
 						organism.num_mana = 0
 						organism.ability()
 						ability_activated = True
-		return 1
 
 		# Moving to the next player if necessary
 		self.curr_player.moves -= 1
@@ -154,6 +153,7 @@ class Game(Drawable):
 			# Shuffling water tiles at start of turn
 			if self._shuffle_water:
 				self._shuffle_water_tiles()
+		return 1
 
 	def _shuffle_water_tiles(self):
 		self.grid.shuffle_water_tiles()

@@ -15,7 +15,10 @@ class Grid(Drawable):
 		output = ""
 		for row in self._grid:
 			for tile in row:
-				output += f"{mana_colors[tile]}{tile}"
+				if tile == -1:
+					output +=  f"\u001b[36m#\u001b[0m"
+				else:
+					output += f"{mana_colors[tile]}{tile}"
 			output += "\n"
 		output += "\u001b[0m"
 		return output

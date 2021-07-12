@@ -43,9 +43,12 @@ def receive_and_send_client_action(clients, game):
 		response = None
 		print("Waiting for response")
 		response = (client.recv(BUF_SIZE)).decode('utf-8')
-		response = [int(num) for num in response.split()]
-		index = response[0]
-		additional_arguments = response[1:]
+		try:
+			response = [int(num) for num in response.split()]
+			index = response[0]
+			additional_arguments = response[1:]
+		except:
+			continue
 		input_sucessfully_processed = game.process_move(index, additional_arguments)
 	return 1
 
