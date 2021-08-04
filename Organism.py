@@ -170,6 +170,21 @@ class Trashark(Organism):
 		self.game.next_player.change_HP(-20)
 		self.game.grid.convert_tiles(self.mana_type_index, 2)
 
+class TurnStartEvent(ABC):
+	def __init__(self, max_num_turns_active, game):
+		self.curr_num_turns_active = 0
+		self.max_num_turns_active = max_num_turns_active
+		self.game = game
+		# Caching the players, cause current and next player switch around
+		self.curr_player = self.game.curr_player
+		self.next_player = self.game.next_player
+		self.subscribed = True
+
+	def act(self):
+		# Unsubscribing the event
+		self.curr_num_turns_active += 1
+		if self.curr_num_turns_active == self.max_num_turns_active:
+			self.subscribed = False
 
 class TurnEndEvent(ABC):
 	def __init__(self, max_num_turns_active, game):
@@ -229,7 +244,7 @@ class Gleamur(Organism):
 
 	def ability(self):
 		self.game.next_player.change_HP(-15)
-		self.game.turn_end_events.append(Starblitz(2, self.game))
+		self.game.turn_start_events.append(Starblitz(1, self.game))
 
 
 class Winklit(Organism):
@@ -238,7 +253,7 @@ class Winklit(Organism):
 
 	def ability(self):
 		self.game.next_player.change_HP(-10)
-		self.game.turn_end_events.append(Starblitz(2, self.game))
+		self.game.turn_start_events.append(Starblitz(1, self.game))
 
 
 class Flambagant(Organism):
@@ -319,6 +334,30 @@ class Nerverack(Organism):
 	def ability(self):
 		self.game.next_player.change_HP(-35)
 		self.game.turn_end_events.append(Punish(2, self.game))
+		
+class Harvest(TurnStartEvent):
+	def __init__(self, max_num_turns_active, game, berries):
+		super().__init__(max_num_turns_active, game)
+		self.berries = berries
 
+	def act(self):
+		self.curr_player.change_num_berries(berries)
+		super().act()
+		
+class Birchard(Organism):
+	def __init__(self):
+		super().__init__("Birchard", 'Harvest+: Attacks for 15 HP & adds 2 berries at the start of your next turn.', 5, mana_indexes['grass'], None)
 
-stage_1_organisms = [Bonzumi(), Pelijet(), Turtleisk(), Slickitty(), Barbenin(), Pyrokun(), Trashark(), Elfini(), Winklit(), Timingo(), Criminook(), Nerverack()]
+	def ability(self):
+		self.game.next_player.change_HP(-15)
+		self.game.turn_start_events.append(Harvest(1, self.game, 2))
+		
+class Birchee(Organism):
+	def __init__(self):
+		super()__init__("Birchee", 'Harvest: Attacks for 10 HP & adds 1 berry on your next turn for 2 turns.', 6, mana_indexes['grass'], Birchard)
+
+	def ability(self):
+		self.game.next_player.change_HP(-10)
+		self.game.turn_start_events.append(Harvest(2, self.game, 1))
+	
+stage_1_organisms = [Bonzumi(), Pelijet(), Turtleisk(), Slickitty(), Barbenin(), Pyrokun(), Trashark(), Elfini(), Winklit(), Timingo(), Criminook(), Nerverack(), Birchee()]
