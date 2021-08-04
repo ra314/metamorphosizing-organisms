@@ -16,6 +16,7 @@ class Game(Drawable):
 		self._actions_buffer = []
 		self._shuffle_water = False
 		self._start()
+		self.turn_start_events = []
 		self.turn_end_events = []
 
 	def draw(self):
@@ -153,6 +154,16 @@ class Game(Drawable):
 			# Shuffling water tiles at start of turn
 			if self._shuffle_water:
 				self._shuffle_water_tiles()
+				
+			# Running turn start events
+			# Birchee's berries come on YOUR turn. Added check for player against game's curr_player
+			print(self.turn_start_events)
+			for event in self.turn_start_events:
+				if self.curr_player == event.curr_player:
+					event.act()
+
+			# Removing unsubscribed turn start events
+			self.turn_start_events = [event for event in self.turn_start_events if event.subscribed]
 		return 1
 
 	def _shuffle_water_tiles(self):
