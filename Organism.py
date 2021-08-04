@@ -67,7 +67,7 @@ class Sephanix(Organism):
 
 	def ability(self):
 		self.game.next_player.change_HP(-20)
-		self.game.grid.convert_tiles(super().mana_type_index, 3)
+		self.game.grid.convert_tiles(self.mana_type_index, 3)
 
 
 class Pelijet(Organism):
@@ -76,7 +76,7 @@ class Pelijet(Organism):
 
 	def ability(self):
 		self.game.next_player.change_HP(-10)
-		self.game.grid.convert_tiles(super().mana_type_index, 2)
+		self.game.grid.convert_tiles(self.mana_type_index, 2)
 
 
 class Karaggon(Organism):
